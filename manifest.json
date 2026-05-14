@@ -1,0 +1,20 @@
+{
+  "name": "凪のシミュレーション",
+  "short_name": "凪",
+  "description": "恋愛心理シミュレーション — 完全には理解できない存在へ近づく物語",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#07080f",
+  "theme_color": "#07080f",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment"]
+}

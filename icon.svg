@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#0d0e1a"/>
+  <circle cx="256" cy="256" r="180" fill="rgba(91,127,212,0.04)"/>
+  <text x="256" y="318" text-anchor="middle" fill="#6a80c0" font-size="248"
+    font-family="'Hiragino Mincho ProN','Noto Serif JP',Georgia,serif" opacity="0.88">凪</text>
+</svg>
