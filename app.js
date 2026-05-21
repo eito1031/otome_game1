@@ -332,14 +332,14 @@ function fmtText(s) {
     .replace(/\n/g,'<br>');
 }
 
-// Typewriter effect
-async function typewrite(el, text, speed = 28) {
-  const parts = text.split('');
+// Typewriter effect — skipRef.val = true to instantly complete
+async function typewrite(el, text, speed, skipRef) {
+  let cur = '';
   el.innerHTML = '';
-  for (const ch of parts) {
-    el.innerHTML = fmtText(el.textContent + ch);
-    // re-apply formatting on each char is expensive, so just update textContent then format at end
-    el.textContent += ch;
+  for (const ch of text) {
+    if (skipRef?.val) break;
+    cur += ch;
+    el.innerHTML = fmtText(cur);
     await sleep(speed);
   }
   el.innerHTML = fmtText(text);
@@ -353,7 +353,8 @@ class App {
     this.state  = new GameState();
     this.root   = document.getElementById('app');
     this.busy   = false;
-    this.phase  = null; // 'narration' | 'dialogue' | 'choices' | 'response'
+    this.phase  = null;
+    this._skip  = { val: false }; // set to true mid-type to show full text instantly
   }
 
   start() {
@@ -425,11 +426,14 @@ class App {
 </div>`;
 
     document.getElementById('menu-btn').addEventListener('click', () => this._showMenu());
-    document.getElementById('tb-cont').addEventListener('click', () => this._onContinue());
+    document.getElementById('tb-cont').addEventListener('click', () => this._onTap());
     document.getElementById('scene-bg').addEventListener('click', (e) => {
       if (!e.target.closest('.choice-btn') && !e.target.closest('.btn-menu')) {
-        this._onContinue();
+        this._onTap();
       }
+    });
+    document.getElementById('textbox').addEventListener('click', (e) => {
+      if (!e.target.closest('.tb-continue')) this._onTap();
     });
 
     this._step = 0;
@@ -450,14 +454,18 @@ class App {
       tbName.textContent = 'ナレーション';
       tbName.className = 'tb-name narrator';
       tbCont.classList.add('hidden');
-      await typewrite(tbText, this._scene.narration, 22);
+      this._skip.val = false;
+      await typewrite(tbText, this._scene.narration, 60, this._skip);
+      this._skip.val = false;
       tbCont.classList.remove('hidden');
       this._phase = 'dialogue';
     } else if (this._phase === 'dialogue') {
       tbName.textContent = this._scene.speaker;
       tbName.className = 'tb-name';
       tbCont.classList.add('hidden');
-      await typewrite(tbText, this._scene.text, 30);
+      this._skip.val = false;
+      await typewrite(tbText, this._scene.text, 70, this._skip);
+      this._skip.val = false;
       tbCont.classList.add('hidden');
       this._phase = 'choices';
       this._showChoices();
@@ -522,15 +530,23 @@ class App {
     if (tbCont) tbCont.classList.add('hidden');
 
     await sleep(400);
-    if (tbText) await typewrite(tbText, choice.res, 30);
+    if (tbText) {
+      this._skip.val = false;
+      await typewrite(tbText, choice.res, 65, this._skip);
+      this._skip.val = false;
+    }
     if (tbCont) { tbCont.textContent = '次へ ▶'; tbCont.classList.remove('hidden'); }
 
     this._phase = 'next';
     this.busy = false;
   }
 
-  _onContinue() {
-    if (this.busy) return;
+  _onTap() {
+    // If currently typing → skip to full text
+    if (this.busy) {
+      this._skip.val = true;
+      return;
+    }
     if (this._phase === 'narration' || this._phase === 'dialogue') {
       this._runStep();
     } else if (this._phase === 'next') {
