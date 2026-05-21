@@ -1,7 +1,15 @@
 const CACHE = 'nagi-v1';
-const ASSETS = ['/', '/index.html', '/style.css', '/app.js', '/manifest.json', '/icon.svg'];
 
 self.addEventListener('install', e => {
+  const base = self.registration.scope;
+  const ASSETS = [
+    base,
+    base + 'index.html',
+    base + 'style.css',
+    base + 'app.js',
+    base + 'manifest.json',
+    base + 'icon.svg',
+  ];
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
 });
