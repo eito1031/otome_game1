@@ -239,22 +239,6 @@ const SCENES = [
     ],
   },
   {
-    bg: 'classroom', expr: 'neutral',
-    narration: '次に会った時、えいとの表情が少し固かった。',
-    speaker: 'えいと', text: '仕事、どう。\n（急に聞いてくる）',
-    choices: [
-      { label: 'えいとは？（聞き返す）',
-        res: '...別に\n*でも少し、間があった*', resExpr: 'soft',
-        d: { 安心度:5, 自己開示率:2 } },
-      { label: '大変だけど頑張ってます！',
-        res: '...そっか\n*どこか遠い目をした*', resExpr: 'neutral',
-        d: { 安心度:3, 理解度:2 } },
-      { label: '普通かな。えいとこそ大丈夫？',
-        res: '...関係ない\n*視線を逸らした*', resExpr: 'cold',
-        d: { 崩壊危険値:4, 拒絶度:2 } },
-    ],
-  },
-  {
     bg: 'park', expr: 'neutral',
     narration: '休日の公園。\n珍しく、えいとが先に声をかけてきた。',
     speaker: 'えいと', text: '...なんでここにいるの',
@@ -268,6 +252,22 @@ const SCENES = [
       { label: '偶然です！びっくりした',
         res: '...そう\n*少し、前を向いた*', resExpr: 'cold',
         d: { 崩壊危険値:2 } },
+    ],
+  },
+  {
+    bg: 'classroom', expr: 'neutral',
+    narration: '次に会った時、えいとが急に話しかけてきた。',
+    speaker: 'えいと', text: '仕事、どう。\n（急に聞いてくる）',
+    choices: [
+      { label: 'えいとは？（聞き返す）',
+        res: '...別に\n*でも少し、間があった*', resExpr: 'soft',
+        d: { 安心度:5, 自己開示率:2 } },
+      { label: '大変だけど頑張ってます！',
+        res: '...そっか\n*どこか遠い目をした*', resExpr: 'neutral',
+        d: { 安心度:3, 理解度:2 } },
+      { label: '普通かな。えいとこそ大丈夫？',
+        res: '...関係ない\n*視線を逸らした*', resExpr: 'cold',
+        d: { 崩壊危険値:4, 拒絶度:2 } },
     ],
   },
   {
@@ -319,35 +319,35 @@ const SCENES = [
     ],
   },
   {
-    bg: 'evening', expr: 'cold',
-    narration: '仕事終わり。\nビルの屋上でえいとが空を見ていた。',
-    speaker: 'えいと', text: '...消えたら、楽になれるのかな\n（こちらを向いて）冗談だよ',
+    bg: 'evening', expr: 'neutral',
+    narration: '「今日、暇か」\nえいとから初めて連絡が来た。',
+    speaker: 'えいと', text: '...来てくれると思ってなかった',
     choices: [
-      { label: 'そんなこと言わないで',
-        res: '...うるさい\n*でも逃げなかった*', resExpr: 'cold',
-        d: { 崩壊危険値:8, 拒絶度:3 } },
-      { label: '（黙って、隣に立つ）',
-        res: '...何も言わないの\n*少し、笑った気がした*', resExpr: 'soft',
-        d: { 安心度:9, 自己開示率:5, 崩壊危険値:-6 } },
-      { label: '楽になりたいって思ってるの？',
-        res: '...分からない、俺も\n*小声だった*', resExpr: 'cold',
-        d: { 崩壊危険値:5, 理解度:3 } },
+      { label: '連絡くれて嬉しかったよ',
+        res: '...そういうこと言うな\n*耳が少し赤かった*', resExpr: 'soft',
+        d: { 安心度:8, 依存度:3, 自己開示率:4, 崩壊危険値:-5 } },
+      { label: '（隣に座って、黙っている）',
+        res: '...ここ、好きなんだ\n*珍しく、自分から話した*', resExpr: 'neutral',
+        d: { 安心度:6, 自己開示率:5, 崩壊危険値:-4 } },
+      { label: '呼んでくれたらいつでも来るよ',
+        res: '...そんなこと言うなよ\n*困ったように呟いた*', resExpr: 'cold',
+        d: { 崩壊危険値:3, 依存度:2 } },
     ],
   },
   {
-    bg: 'spring', expr: 'neutral',
-    narration: '桜の季節。\nえいととの関係は、少しだけ変わった気がする。',
-    speaker: 'えいと', text: '...（こちらを見る）',
+    bg: 'spring', expr: 'soft',
+    narration: '桜の季節。\nえいとから「少し話がある」と呼び出された。',
+    speaker: 'えいと', text: '...俺、お前のことが好きだ\n*静かに、でもはっきりと言った*',
     choices: [
-      { label: '（静かに、隣に立つ）',
-        res: '...壊れないかもしれない\n*小さく、呟いた*', resExpr: 'soft',
-        d: { 安心度:5, 自己開示率:5, 崩壊危険値:-5 } },
-      { label: 'えいとのこと、もっと知りたい',
-        res: '...そういうの、怖い\nまあ、でも\n*少し間があった*', resExpr: 'neutral',
-        d: { 理解度:4, 崩壊危険値:3, 自己開示率:3 } },
-      { label: '今日も一緒にいていい？',
-        res: '...別に\n*でも少し、微笑んだ気がした*', resExpr: 'soft',
-        d: { 安心度:4, 依存度:2 } },
+      { label: '私も好きだよ',
+        res: '...そっか\n*珍しく、笑った*', resExpr: 'soft',
+        d: { 安心度:12, 自己開示率:8, 崩壊危険値:-10 } },
+      { label: '（黙って、えいとを見る）',
+        res: '...返事しろよ\n*耳まで赤くなっていた*', resExpr: 'soft',
+        d: { 安心度:8, 自己開示率:4, 崩壊危険値:-5 } },
+      { label: '...急すぎて、うまく答えられない',
+        res: '...そうか\n*静かに、視線を逸らした*', resExpr: 'cold',
+        d: { 崩壊危険値:5, 理解度:2 } },
     ],
   },
 ];
@@ -358,15 +358,15 @@ const SCENES = [
 const ENDINGS = {
   best_end: {
     cls:'ending-best', tag:'BEST END', expr:'soft',
-    text:'えいとが、笑った。\n\nそれは本当に小さな変化で、\n気づかない人には気づかないくらいの。\n\nでも、あなたには見えた。\n\n「...壊れないかもしれない」\n\n隣にいても壊れないかもしれないと、\nえいとは初めてそう思えた。',
+    text:'えいとが、笑った。\n\n「...一緒にいてくれるか」\n\n「うん」\n\n短い言葉だったけど、\nずっとそれを待っていた気がする。\n\n──付き合うことになった。\n\nえいとは今も口下手で、\nたまに不器用で、\n全然うまくできないこともある。\n\nでも、隣にいると決めた。\nえいとも、あなたも。',
   },
   good_end: {
     cls:'ending-good', tag:'GOOD END', expr:'neutral',
-    text:'えいととの距離は、まだ遠い。\n\nでも以前より、少しだけ近くなった。\n\n「...また来る？」\n\n素直じゃないけれど、それがえいとの精一杯だった。',
+    text:'えいとの告白に、まだ答えを出せていない。\n\nでも以前より、ずっと近くなった。\n\n「...返事、急がなくていい」\n\nそう言いながら、えいとはまだそばにいる。',
   },
   normal_end: {
     cls:'ending-normal', tag:'END', expr:'neutral',
-    text:'えいとは今日も、一人でいる。\n\nあなたのことが嫌いなわけじゃない。\nただ、うまく距離が縮められなかった。\n\nそれだけのこと。',
+    text:'えいとは今日も、少し遠い。\n\nあのとき何か違うことをしていたら、\n何かが変わっていたのかもしれない。\n\nでも、嫌いになったわけじゃない。\nそれだけのこと。',
   },
   bad_collapse: {
     cls:'ending-bad', tag:'BAD END', expr:'cold',
@@ -383,8 +383,8 @@ function getEnding(metrics, sceneIdx) {
   if (m.崩壊危険値 >= 80) return 'bad_collapse';
   if (m.拒絶度 >= 80) return 'bad_rejection';
   if (sceneIdx >= SCENES.length) {
-    if (m.安心度 >= 52 && m.自己開示率 >= 42 && m.崩壊危険値 <= 45) return 'best_end';
-    if (m.安心度 >= 32 && m.崩壊危険値 <= 65) return 'good_end';
+    if (m.安心度 >= 60 && m.自己開示率 >= 22 && m.崩壊危険値 <= 35) return 'best_end';
+    if (m.安心度 >= 38 && m.崩壊危険値 <= 60) return 'good_end';
     return 'normal_end';
   }
   return null;
@@ -486,10 +486,10 @@ class App {
 <div class="setup-screen">
   <div class="setup-wrap">
     <div class="setup-logo">えいと</div>
-    <div class="setup-tagline">完全には理解できない存在へ近づく物語</div>
+    <div class="setup-tagline">えいとの隣に立てるか。それだけの話。</div>
     <div class="setup-card">
-      これは「攻略」ではない。<br>
-      ただ、隣にいようとするだけの話。
+      不器用で、口下手で、<br>
+      でもたしかに、えいとはそこにいる。
     </div>
     <button id="start-btn" class="btn-start">はじめる</button>
     ${hasSave ? '<button id="cont-btn" class="btn-cont">続きから</button>' : ''}
