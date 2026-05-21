@@ -13,155 +13,185 @@ const M_COLORS = {
 };
 
 // ============================================================
-// CHARACTER SVG  (えいと — 22歳・男)
+// CHARACTER SVG  (えいと — 社会人1年目)
 // ============================================================
 function charSVG(expr) {
+  const e = expr || 'neutral';
+
+  // Each expression: upper lash line + iris outer + iris inner + highlight
   const eyes = {
-    neutral: `<ellipse cx="84" cy="118" rx="10" ry="9.5" fill="#4a5a8a"/>
-      <circle cx="87" cy="114" r="3.5" fill="white"/>
-      <ellipse cx="116" cy="118" rx="10" ry="9.5" fill="#4a5a8a"/>
-      <circle cx="119" cy="114" r="3.5" fill="white"/>`,
-    cold: `<ellipse cx="84" cy="117" rx="10" ry="7" fill="#4a5a8a"/>
-      <circle cx="87" cy="114" r="3" fill="white"/>
-      <ellipse cx="116" cy="117" rx="10" ry="7" fill="#4a5a8a"/>
-      <circle cx="119" cy="114" r="3" fill="white"/>`,
-    soft: `<ellipse cx="84" cy="120" rx="10" ry="10" fill="#5a6a9a"/>
-      <circle cx="87" cy="116" r="4" fill="white"/>
-      <ellipse cx="116" cy="120" rx="10" ry="10" fill="#5a6a9a"/>
-      <circle cx="119" cy="116" r="4" fill="white"/>`,
+    neutral: `
+      <path d="M73 113 Q82 110 91 113" stroke="#1c1c1c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="82" cy="119" rx="9" ry="9" fill="#7a5535"/>
+      <ellipse cx="82" cy="119" rx="5.5" ry="5.5" fill="#3e2010"/>
+      <circle cx="85" cy="115" r="2.5" fill="white"/>
+      <path d="M109 113 Q118 110 127 113" stroke="#1c1c1c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="118" cy="119" rx="9" ry="9" fill="#7a5535"/>
+      <ellipse cx="118" cy="119" rx="5.5" ry="5.5" fill="#3e2010"/>
+      <circle cx="121" cy="115" r="2.5" fill="white"/>`,
+    cold: `
+      <path d="M73 112 Q82 108 91 111" stroke="#1c1c1c" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="82" cy="117" rx="9" ry="7" fill="#7a5535"/>
+      <ellipse cx="82" cy="117" rx="5.5" ry="4.5" fill="#3e2010"/>
+      <circle cx="85" cy="114" r="2" fill="white"/>
+      <path d="M109 112 Q118 108 127 111" stroke="#1c1c1c" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="118" cy="117" rx="9" ry="7" fill="#7a5535"/>
+      <ellipse cx="118" cy="117" rx="5.5" ry="4.5" fill="#3e2010"/>
+      <circle cx="121" cy="114" r="2" fill="white"/>`,
+    soft: `
+      <path d="M73 115 Q82 111 91 115" stroke="#1c1c1c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="82" cy="121" rx="9" ry="9.5" fill="#8a6545"/>
+      <ellipse cx="82" cy="121" rx="5.5" ry="6" fill="#4e3020"/>
+      <circle cx="85" cy="117" r="2.5" fill="white"/>
+      <path d="M109 115 Q118 111 127 115" stroke="#1c1c1c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="118" cy="121" rx="9" ry="9.5" fill="#8a6545"/>
+      <ellipse cx="118" cy="121" rx="5.5" ry="6" fill="#4e3020"/>
+      <circle cx="121" cy="117" r="2.5" fill="white"/>`,
   };
   const mouths = {
-    neutral: `<path d="M90 140 Q100 143 110 140" stroke="#d4886a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
-    cold:    `<path d="M90 142 Q100 139 110 142" stroke="#d4886a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
-    soft:    `<path d="M90 138 Q100 146 110 138" stroke="#d4886a" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    neutral: `<path d="M90 140 Q100 142 110 140" stroke="#c8846a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+    cold:    `<path d="M90 141 Q100 138 110 141" stroke="#b87860" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+    soft:    `<path d="M88 139 Q100 148 112 139" stroke="#c8846a" stroke-width="2" fill="none" stroke-linecap="round"/>`,
   };
-  const e = expr || 'neutral';
   const blush = e === 'soft'
-    ? `<ellipse cx="72" cy="128" rx="11" ry="7" fill="rgba(255,120,140,.22)"/>
-       <ellipse cx="128" cy="128" rx="11" ry="7" fill="rgba(255,120,140,.22)"/>`
+    ? `<ellipse cx="68" cy="129" rx="10" ry="6" fill="rgba(255,110,130,.18)"/>
+       <ellipse cx="132" cy="129" rx="10" ry="6" fill="rgba(255,110,130,.18)"/>`
     : '';
 
   return `<svg viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
   <ellipse cx="100" cy="377" rx="54" ry="7" fill="rgba(0,0,0,.08)"/>
-  <rect x="72" y="272" width="22" height="88" rx="9" fill="#2e3d5e"/>
-  <rect x="106" y="272" width="22" height="88" rx="9" fill="#2e3d5e"/>
-  <ellipse cx="83" cy="360" rx="19" ry="9" fill="#2a2a2e"/>
-  <ellipse cx="117" cy="360" rx="19" ry="9" fill="#2a2a2e"/>
-  <path d="M58 190 Q54 234 52 276 L148 276 Q146 234 142 190 Z" fill="#7a8090"/>
-  <path d="M58 197 Q32 216 28 270 Q40 274 46 270 Q46 228 63 209Z" fill="#7a8090"/>
-  <path d="M142 197 Q168 216 172 270 Q160 274 154 270 Q154 228 137 209Z" fill="#7a8090"/>
-  <ellipse cx="34" cy="273" rx="13" ry="9" fill="#ffd5b4"/>
-  <ellipse cx="166" cy="273" rx="13" ry="9" fill="#ffd5b4"/>
-  <path d="M72 238 Q100 244 128 238 L126 264 Q100 267 74 264 Z" fill="#686e7a"/>
-  <path d="M76 185 Q100 198 124 185" stroke="#686e7a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <rect x="88" y="158" width="24" height="26" rx="8" fill="#ffd5b4"/>
-  <ellipse cx="100" cy="110" rx="52" ry="55" fill="#ffd5b4"/>
-  <ellipse cx="100" cy="72" rx="52" ry="38" fill="#1c1c1c"/>
-  <path d="M50 85 Q46 102 48 138 Q54 142 60 138 Q57 107 56 88Z" fill="#1c1c1c"/>
-  <path d="M150 85 Q154 102 152 138 Q146 142 140 138 Q143 107 144 88Z" fill="#1c1c1c"/>
-  <path d="M50 90 Q57 53 100 51 Q143 53 150 90 Q138 62 100 60 Q62 62 50 90Z" fill="#1c1c1c"/>
-  <path d="M82 57 Q87 42 93 56 Q88 48 82 57Z" fill="#1c1c1c"/>
-  <path d="M97 50 Q104 34 110 50 Q105 42 97 50Z" fill="#1c1c1c"/>
-  <path d="M114 55 Q121 42 126 57 Q120 48 114 55Z" fill="#1c1c1c"/>
-  <path d="M68 97 Q80 92 94 97" stroke="#1c1c1c" stroke-width="4" fill="none" stroke-linecap="round"/>
-  <path d="M106 97 Q120 92 132 97" stroke="#1c1c1c" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <ellipse cx="82" cy="366" rx="21" ry="8" fill="#d0d0d0"/>
+  <ellipse cx="82" cy="362" rx="20" ry="7" fill="#222228"/>
+  <ellipse cx="118" cy="366" rx="21" ry="8" fill="#d0d0d0"/>
+  <ellipse cx="118" cy="362" rx="20" ry="7" fill="#222228"/>
+  <path d="M63 272 Q60 330 58 360 L100 360 L102 282 Z" fill="#8a8a98"/>
+  <path d="M137 272 Q140 330 142 360 L100 360 L98 282 Z" fill="#8a8a98"/>
+  <path d="M74 292 Q75 330 74 357" stroke="#7a7a88" stroke-width="1.2" fill="none"/>
+  <path d="M126 292 Q125 330 126 357" stroke="#7a7a88" stroke-width="1.2" fill="none"/>
+  <path d="M55 190 Q50 234 48 277 L152 277 Q150 234 145 190 Z" fill="#1e1e24"/>
+  <path d="M70 176 Q100 166 130 176 Q132 188 128 196 Q100 202 72 196 Q68 188 70 176Z" fill="#18181e"/>
+  <path d="M55 197 Q26 220 22 274 Q37 278 46 274 Q46 234 62 213Z" fill="#1e1e24"/>
+  <path d="M145 197 Q174 220 178 274 Q163 278 154 274 Q154 234 138 213Z" fill="#1e1e24"/>
+  <ellipse cx="28" cy="277" rx="13" ry="9" fill="#ffd5b4"/>
+  <ellipse cx="172" cy="277" rx="13" ry="9" fill="#ffd5b4"/>
+  <ellipse cx="24" cy="271" rx="4" ry="3" fill="none" stroke="#c0c0c8" stroke-width="1.8"/>
+  <line x1="100" y1="188" x2="100" y2="277" stroke="#38383e" stroke-width="1.5"/>
+  <circle cx="100" cy="240" r="3" fill="#38383e"/>
+  <path d="M57 240 L70 236 L70 260 L57 264 Z" fill="#18181e"/>
+  <path d="M143 240 L130 236 L130 260 L143 264 Z" fill="#18181e"/>
+  <path d="M82 187 Q100 198 118 187 Q114 179 100 177 Q86 179 82 187Z" fill="#2c2c36"/>
+  <path d="M84 181 Q100 194 116 181" stroke="#b8b8c4" stroke-width="1.5" fill="none"/>
+  <rect x="88" y="156" width="24" height="30" rx="8" fill="#ffd5b4"/>
+  <ellipse cx="100" cy="107" rx="47" ry="54" fill="#ffd5b4"/>
+  <ellipse cx="53" cy="117" rx="5" ry="8" fill="#ffd5b4"/>
+  <ellipse cx="147" cy="117" rx="5" ry="8" fill="#ffd5b4"/>
+  <circle cx="53" cy="111" r="2" fill="#b0b0bc"/>
+  <ellipse cx="100" cy="70" rx="50" ry="36" fill="#141820"/>
+  <path d="M51 88 Q47 107 50 144 Q56 148 62 144 Q59 112 59 90Z" fill="#141820"/>
+  <path d="M149 88 Q153 108 151 148 Q145 152 139 148 Q142 114 141 90Z" fill="#141820"/>
+  <path d="M51 92 Q57 52 100 50 Q143 52 149 92 Q136 62 100 60 Q64 62 51 92Z" fill="#141820"/>
+  <path d="M78 58 Q94 44 114 54 Q97 48 78 58Z" fill="#141820"/>
+  <path d="M88 53 Q106 37 124 50 Q108 43 88 53Z" fill="#141820"/>
+  <path d="M67 74 Q80 62 98 64" stroke="#22283a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M68 97 Q80 92 94 97" stroke="#141414" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <path d="M106 97 Q120 92 132 97" stroke="#141414" stroke-width="3.2" fill="none" stroke-linecap="round"/>
   ${eyes[e] || eyes.neutral}
-  <circle cx="100" cy="130" r="2.5" fill="#e8a07a"/>
+  <circle cx="100" cy="131" r="2" fill="#e0987a"/>
   ${blush}
   ${mouths[e] || mouths.neutral}
 </svg>`;
 }
 
 // ============================================================
-// STORY  (大学・22歳のえいと)
+// STORY  (社会人1年目のえいと × 別会社の主人公)
 // ============================================================
 const SCENES = [
   {
-    bg: 'park', expr: 'neutral',
-    narration: '大学の中庭。\n風が強い日で、えいとのノートが飛んでいった。',
-    speaker: 'えいと', text: '（舌打ちして、一人で拾い始める）',
+    bg: 'evening', expr: 'neutral',
+    narration: '共通の友人の飲み会。\nにぎやかな席の端に、ひとり座っている人がいた。',
+    speaker: 'えいと', text: '...（視線が合う）',
     choices: [
-      { label: '（黙って、一緒に拾う）',
-        res: '...別に、一人でよかった\n*でも、受け取ってくれた*', resExpr: 'cold',
+      { label: '（隣に座る）',
+        res: '...勝手にすれば\n*少し、椅子をずらした*', resExpr: 'cold',
         d: { 安心度:3, 理解度:2 } },
-      { label: '遠くに飛んだの、持ってきます',
-        res: '...ああ\n*短く言って、目を逸らした*', resExpr: 'neutral',
-        d: { 安心度:4, 理解度:1 } },
-      { label: '大丈夫ですか？',
-        res: '見ての通り\n*冷たく言った*', resExpr: 'cold',
-        d: { 崩壊危険値:4, 拒絶度:2 } },
-    ],
-  },
-  {
-    bg: 'classroom', expr: 'neutral',
-    narration: '翌週。ゼミに入ると、窓際にえいとがいた。',
-    speaker: 'えいと', text: '...（一瞬、こちらを見た）',
-    choices: [
-      { label: '先週はありがとう（話しかける）',
-        res: '...別に\n*すぐ目を逸らした*', resExpr: 'cold',
-        d: { 安心度:2, 理解度:1 } },
-      { label: '（目が合ったが、会釈だけ）',
-        res: '...\n*少し、間があった*', resExpr: 'soft',
+      { label: '乾杯しませんか？',
+        res: '...まあ\n*グラスを軽く合わせた*', resExpr: 'soft',
         d: { 安心度:5, 崩壊危険値:-2 } },
-      { label: '隣いいですか？（席を指す）',
-        res: '...好きにしろ\n*でも追い払わなかった*', resExpr: 'neutral',
-        d: { 安心度:3, 崩壊危険値:2 } },
+      { label: '（向かいに座って、別の会話をする）',
+        res: '...*気づいたら、こちらを見ていた*', resExpr: 'cold',
+        d: { 理解度:2, 崩壊危険値:2 } },
     ],
   },
   {
-    bg: 'classroom', expr: 'neutral',
-    narration: null,
-    speaker: 'えいと', text: '（小声で）...ペン、ある？',
+    bg: 'night', expr: 'neutral',
+    narration: '飲み会の帰り道。\nホームで待っていると、えいとが来た。',
+    speaker: 'えいと', text: '...（気づいているが、何も言わない）',
     choices: [
-      { label: 'どうぞ（笑顔で渡す）',
-        res: '...なんで笑ってんの\n*でも、受け取った*', resExpr: 'cold',
-        d: { 安心度:2, 崩壊危険値:3 } },
-      { label: '（黙って、そっと渡す）',
-        res: '...ありがと\n*小さく、口角が動いた*', resExpr: 'soft',
-        d: { 安心度:6, 自己開示率:2, 崩壊危険値:-2 } },
-      { label: '後で返してね',
-        res: '分かってる\n*短く言った*', resExpr: 'neutral',
-        d: { 理解度:2, 安心度:2 } },
+      { label: '（隣に並ぶ）',
+        res: '偶然だな\n*短く言った*', resExpr: 'neutral',
+        d: { 安心度:4, 理解度:1 } },
+      { label: '（向こうが話すまで待つ）',
+        res: '...乗り換え、どこ\n*小声だった*', resExpr: 'soft',
+        d: { 安心度:6, 崩壊危険値:-3 } },
+      { label: '同じ方向ですか？（明るく）',
+        res: '...みたいだな\n*窓の外を向いた*', resExpr: 'cold',
+        d: { 安心度:2, 崩壊危険値:2 } },
     ],
   },
   {
     bg: 'hallway', expr: 'neutral',
-    narration: '混んだ学食。\n他に空席がなく、えいとの向かいに座るしかなかった。',
-    speaker: 'えいと', text: '...（こちらを見て、何も言わない）',
+    narration: '週末のカフェ。\nまたえいとがいた。',
+    speaker: 'えいと', text: '...また会ったな',
     choices: [
-      { label: '向かい、いいですか？',
-        res: '...まあ\n*また食べ始めた*', resExpr: 'neutral',
-        d: { 安心度:3, 理解度:2 } },
-      { label: '（何も言わず座る）',
-        res: '...*じろっと見たが、何も言わなかった*', resExpr: 'soft',
+      { label: '縁がありますね（笑顔で）',
+        res: '...そういうの信じない\n*でも少し、口元が動いた*', resExpr: 'neutral',
+        d: { 理解度:3, 安心度:2 } },
+      { label: '（黙って、向かいに座る）',
+        res: '...\n*なぜか、追い払わなかった*', resExpr: 'soft',
         d: { 安心度:5, 崩壊危険値:-2 } },
-      { label: '（空席を探して立ち去る）',
-        res: '...*なぜか、ちらっと見た*', resExpr: 'cold',
-        d: { 崩壊危険値:2 } },
+      { label: '奇遇ですね！（大きい声で）',
+        res: '...うるさい\n*耳を塞ぐ仕草をした*', resExpr: 'cold',
+        d: { 崩壊危険値:4, 安心度:-1 } },
     ],
   },
   {
-    bg: 'evening', expr: 'neutral',
-    narration: '授業後、駅に向かっていると\nえいとが同じ方向を歩いていた。',
-    speaker: 'えいと', text: '...（気づいている、でも何も言わない）',
+    bg: 'classroom', expr: 'neutral',
+    narration: '次に会った時、えいとの表情が少し固かった。',
+    speaker: 'えいと', text: '仕事、どう。\n（急に聞いてくる）',
     choices: [
-      { label: '（隣に並ぶ）',
-        res: '...なんで一緒に歩いてる\n*でも立ち止まらなかった*', resExpr: 'neutral',
+      { label: 'えいとは？（聞き返す）',
+        res: '...別に\n*でも少し、間があった*', resExpr: 'soft',
+        d: { 安心度:5, 自己開示率:2 } },
+      { label: '大変だけど頑張ってます！',
+        res: '...そっか\n*どこか遠い目をした*', resExpr: 'neutral',
+        d: { 安心度:3, 理解度:2 } },
+      { label: '普通かな。えいとこそ大丈夫？',
+        res: '...関係ない\n*視線を逸らした*', resExpr: 'cold',
+        d: { 崩壊危険値:4, 拒絶度:2 } },
+    ],
+  },
+  {
+    bg: 'park', expr: 'neutral',
+    narration: '休日の公園。\n珍しく、えいとが先に声をかけてきた。',
+    speaker: 'えいと', text: '...なんでここにいるの',
+    choices: [
+      { label: 'えいとこそ（笑）',
+        res: '...散歩\n*それ以上は言わなかった*', resExpr: 'neutral',
         d: { 安心度:4, 理解度:3 } },
-      { label: '（少し後ろから、同じ方向へ）',
-        res: '...*ペースが合った*', resExpr: 'soft',
-        d: { 安心度:6, 崩壊危険値:-3 } },
-      { label: '（先を歩く）',
-        res: '...*少し後ろから視線を感じた*', resExpr: 'cold',
+      { label: '（何も言わず、隣に並ぶ）',
+        res: '...*しばらく、二人で歩いた*', resExpr: 'soft',
+        d: { 安心度:7, 崩壊危険値:-3 } },
+      { label: '偶然です！びっくりした',
+        res: '...そう\n*少し、前を向いた*', resExpr: 'cold',
         d: { 崩壊危険値:2 } },
     ],
   },
   {
     bg: 'classroom', expr: 'cold',
-    narration: 'ある日、えいとがずっと窓の外を見ていた。\nいつもより少し、遠い目をしていた。',
+    narration: 'ある日、えいとの様子がおかしかった。\n目の下に隈があった。',
     speaker: 'えいと', text: '...別に、何でもない',
     choices: [
-      { label: 'どうしたの、顔色悪い',
+      { label: '顔色悪いよ',
         res: '余計なこと言うな\n*視線を逸らした*', resExpr: 'cold',
         d: { 崩壊危険値:8, 拒絶度:3 } },
       { label: '（何も言わず、隣にいる）',
@@ -184,29 +214,29 @@ const SCENES = [
         res: '...ごめん、こんな時間に\n*短く言った*', resExpr: 'neutral',
         d: { 安心度:4, 崩壊危険値:-1 } },
       { label: '何かありましたか？！',
-        res: '...別に、確認しただけ\n*すぐ既読になったのに返信がなかった*', resExpr: 'cold',
+        res: '...別に、確認しただけ\n*返信が来なくなった*', resExpr: 'cold',
         d: { 安心度:1, 崩壊危険値:1 } },
     ],
   },
   {
-    bg: 'hallway', expr: 'neutral',
-    narration: '大学近くの本屋。\nたまたまえいとがいた。',
-    speaker: 'えいと', text: '（少し驚いた顔で）...何読んでるの',
+    bg: 'rain', expr: 'neutral',
+    narration: '急な雨。\n軒下にえいとがいた。',
+    speaker: 'えいと', text: '...（こちらに気づく）',
     choices: [
-      { label: '（本を見せる）',
-        res: 'そっちか\n*少し、ページをめくった*', resExpr: 'soft',
-        d: { 安心度:5, 自己開示率:2 } },
-      { label: 'えいとは？（棚を指す）',
-        res: '...別に\n*本を閉じた*', resExpr: 'cold',
-        d: { 理解度:3, 崩壊危険値:2 } },
-      { label: 'こういうとこ来るんだ',
-        res: '悪いか\n*でも少し、口角が動いた*', resExpr: 'neutral',
-        d: { 理解度:4, 安心度:2 } },
+      { label: '（黙って、隣に入る）',
+        res: '...狭い\n*でもずれなかった*', resExpr: 'soft',
+        d: { 安心度:6, 自己開示率:2, 崩壊危険値:-3 } },
+      { label: '傘、一緒に入りますか？',
+        res: '...別にいい\n*でも一緒に歩き始めた*', resExpr: 'neutral',
+        d: { 安心度:4, 理解度:2 } },
+      { label: '（先に走り去る）',
+        res: '...*ずっと雨の中に立っていた*', resExpr: 'cold',
+        d: { 崩壊危険値:3 } },
     ],
   },
   {
     bg: 'evening', expr: 'cold',
-    narration: '夕暮れの屋上。\nえいとがひとりで空を見ていた。',
+    narration: '仕事終わり。\nビルの屋上でえいとが空を見ていた。',
     speaker: 'えいと', text: '...消えたら、楽になれるのかな\n（こちらを向いて）冗談だよ',
     choices: [
       { label: 'そんなこと言わないで',
@@ -222,7 +252,7 @@ const SCENES = [
   },
   {
     bg: 'spring', expr: 'neutral',
-    narration: '桜の季節が来た。\nえいととの関係も、少しだけ変わった気がする。',
+    narration: '桜の季節。\nえいととの関係は、少しだけ変わった気がする。',
     speaker: 'えいと', text: '...（こちらを見る）',
     choices: [
       { label: '（静かに、隣に立つ）',
@@ -244,7 +274,7 @@ const SCENES = [
 const ENDINGS = {
   best_end: {
     cls:'ending-best', tag:'BEST END', expr:'soft',
-    text:'えいとが、笑った。\n\nそれは本当に小さな変化で、\n気づかない人には気づかないくらいの。\n\nでも、あなたには見えた。\n\n「...壊れないかもしれない」\n\n男の人があんな風に笑うの、初めて見た気がした。\n隣にいても壊れないかもしれないと、\nえいとは初めてそう思えた。',
+    text:'えいとが、笑った。\n\nそれは本当に小さな変化で、\n気づかない人には気づかないくらいの。\n\nでも、あなたには見えた。\n\n「...壊れないかもしれない」\n\n隣にいても壊れないかもしれないと、\nえいとは初めてそう思えた。',
   },
   good_end: {
     cls:'ending-good', tag:'GOOD END', expr:'neutral',
@@ -260,7 +290,7 @@ const ENDINGS = {
   },
   bad_rejection: {
     cls:'ending-bad', tag:'BAD END', expr:'cold',
-    text:'えいとは、笑わなくなった。\n\nあなたを見る目がどんどん遠くなった。\n\nそしてある日、席が空になっていた。',
+    text:'えいとは、笑わなくなった。\n\nあなたを見る目がどんどん遠くなった。\n\nそしてある日、連絡が途絶えた。',
   },
 };
 
@@ -284,7 +314,7 @@ class GameState {
 
   load() {
     try {
-      const d = JSON.parse(localStorage.getItem('nagi_vn1') || 'null');
+      const d = JSON.parse(localStorage.getItem('eito_vn1') || 'null');
       this.metrics     = d?.metrics     ? { ...INITIAL_METRICS, ...d.metrics } : { ...INITIAL_METRICS };
       this.phase       = d?.phase       ?? 'setup';
       this.sceneIndex  = d?.sceneIndex  ?? 0;
@@ -293,7 +323,7 @@ class GameState {
   }
 
   save() {
-    localStorage.setItem('nagi_vn1', JSON.stringify({
+    localStorage.setItem('eito_vn1', JSON.stringify({
       metrics: this.metrics, phase: this.phase,
       sceneIndex: this.sceneIndex, endingType: this.endingType,
     }));
@@ -304,7 +334,7 @@ class GameState {
     this.phase      = 'setup';
     this.sceneIndex = 0;
     this.endingType = null;
-    localStorage.removeItem('nagi_vn1');
+    localStorage.removeItem('eito_vn1');
   }
 
   applyDelta(d) {
@@ -351,7 +381,7 @@ class App {
     this.root   = document.getElementById('app');
     this.busy   = false;
     this.phase  = null;
-    this._skip  = { val: false }; // set to true mid-type to show full text instantly
+    this._skip  = { val: false };
   }
 
   start() {
@@ -491,20 +521,16 @@ class App {
 
     const choice = this._scene.choices[i];
 
-    // Highlight selected
     document.querySelectorAll('.choice-btn').forEach((b, idx) => {
       if (idx === i) b.classList.add('selected');
     });
     await sleep(300);
 
-    // Hide choices
     const area = document.getElementById('choices-area');
     if (area) area.classList.add('hidden');
 
-    // Apply metrics
     this.state.applyDelta(choice.d);
 
-    // Check for early bad end
     const early = getEnding(this.state.metrics, this.state.sceneIndex);
     if (early && (early === 'bad_collapse' || early === 'bad_rejection')) {
       this.state.endingType = early;
@@ -516,7 +542,6 @@ class App {
       return;
     }
 
-    // Show character response
     const charArea = document.getElementById('char-area');
     if (charArea) charArea.innerHTML = charSVG(choice.resExpr);
 
@@ -539,7 +564,6 @@ class App {
   }
 
   _onTap() {
-    // If currently typing → skip to full text
     if (this.busy) {
       this._skip.val = true;
       return;
