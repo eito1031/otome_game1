@@ -354,8 +354,8 @@ class App {
     this.root.innerHTML = `
 <div class="setup-screen">
   <div class="setup-wrap">
-    <div class="setup-logo">凪になるのを</div>
-    <div class="setup-tagline">画面越しのエトセトラ</div>
+    <div class="setup-logo">画面越しのエトセトラ</div>
+    <div class="setup-tagline">凪になるのを</div>
     <div class="setup-card">
       プロフィール写真は一枚だけ。<br>
       それでも、会ってみることにした。
