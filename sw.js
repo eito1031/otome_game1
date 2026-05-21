@@ -1,4 +1,4 @@
-const CACHE = 'nagi-v1';
+const CACHE = 'nagi-v3';
 
 self.addEventListener('install', e => {
   const base = self.registration.scope;
