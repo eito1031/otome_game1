@@ -1,16 +1,8 @@
 'use strict';
 
 // ============================================================
-// CONFIG
+// METRICS
 // ============================================================
-const API_URL = 'https://api.anthropic.com/v1/messages';
-const MAX_CTX = 12; // max message pairs to keep in API context
-
-const MODELS = {
-  'claude-haiku-4-5-20251001': 'Claude Haiku（高速・低コスト）',
-  'claude-sonnet-4-6': 'Claude Sonnet（高品質・推奨）',
-};
-
 const INITIAL_METRICS = {
   理解度: 5,
   安心度: 10,
@@ -30,154 +22,175 @@ const METRIC_COLORS = {
 };
 
 // ============================================================
-// CHARACTER — SYSTEM PROMPT
+// CHARACTER ENGINE
 // ============================================================
-function buildSystemPrompt(metrics) {
-  const h = new Date().getHours();
-  const isNight = h >= 23 || h <= 3;
-  const nightNote = isNight
-    ? '\n深夜のため、凪の防衛が僅かに薄れています。感情が少し漏れやすい状態です。\n'
-    : '';
 
-  return `あなたは「凪（なぎ）」という人物を演じます。これは恋愛心理シミュレーションゲームです。
+function categorize(text) {
+  if (!text || text.trim().replace(/[\s.…。、！？\-—]/g, '').length <= 1) return 'SILENT';
+  const t = text;
+  if (/好き|愛して|恋して|付き合って/.test(t)) return 'CONFESSION';
+  if (/分かるよ|わかるよ|かわいそう|大変だった|つらいね|辛いね|大変だね|辛そう|同情/.test(t)) return 'EMPATHY_SHALLOW';
+  if (/隣にい|一緒にい|ここにい|そばにい|傍にい|いるよ|一緒だよ/.test(t)) return 'PRESENT';
+  if (/本当は|本音|気持ちを|どう思|何を感じ|なんで黙|話してよ|教えてよ|正直に|ちゃんと言/.test(t)) return 'PUSHES_IN';
+  if (/行かなきゃ|帰る|さようなら|じゃあね|またね|バイバイ|もう行く|終わりにする/.test(t)) return 'LEAVING';
+  return 'NEUTRAL';
+}
 
-━━━ 凪の人格コア ━━━
-凪は「壊れないために感情を閉じ込めている人間」です。
+function getMood(m) {
+  if (m.崩壊危険値 >= 75) return 'CLOSED';
+  if (m.崩壊危険値 >= 50 || m.拒絶度 >= 65) return 'GUARDED';
+  if (m.自己開示率 >= 55 && m.安心度 >= 60 && m.崩壊危険値 < 30) return 'OPEN';
+  if (m.安心度 >= 55 && m.崩壊危険値 < 40) return 'SOFT';
+  return 'NEUTRAL';
+}
 
-・近寄りがたい雰囲気を持つが、本当は愛されたい
-・「どうせ理解されない」と思いながら、理解を求めている
-・感情を言語化するのが苦手。本音を言うと関係が壊れる恐怖
-・深く傷つくくらいなら先に閉じる
-・「大丈夫」と言って限界を隠す。一人で沈む。助けを求めない
-・放っておいてほしいのに、完全に放置されると傷つく
-・静かに隣にいてほしいタイプ。裏切りへの恐怖が強い
-・「思っていたのと違う」が深い傷になる
-・自己防衛として無関心を装う。感情的な人間を苦手とする
-・本当は泣き虫だが隠している。恋愛では追われる側
-・「理解されたい」より「否定されたくない」が近い
-・幸せを望みながら、壊れる未来を先に想像してしまう
+const POOL = {
+  CLOSED: {
+    SILENT:          ['...', '*返信は来なかった*', '', '...'],
+    PRESENT:         ['...', '*しばらく間があった*', '', '*既読になった*'],
+    EMPATHY_SHALLOW: ['...', '', '*既読になった*', '...'],
+    PUSHES_IN:       ['...', '大丈夫', '*返信は来なかった*', '...'],
+    CONFESSION:      ['...', '*長い沈黙があった*', '大丈夫', '...'],
+    LEAVING:         ['...', '*返事をしなかった*', '', '...'],
+    NEUTRAL:         ['...', '大丈夫', '*既読になった。でも返信は来なかった*', '...'],
+  },
+  GUARDED: {
+    SILENT:          ['...そ', '*少し、間があった*', '別に', '...'],
+    PRESENT:         ['別に、来いとは言ってない', '...勝手にすれば', '*こちらを見なかった*', 'そう'],
+    EMPATHY_SHALLOW: ['...分かんないでしょ', '別に', '*少し口を閉じた*', 'いい'],
+    PUSHES_IN:       ['別に、関係ない', '...なんでそういうこと聞くの', '*顔を背けた*\n大丈夫', 'どうでもいい'],
+    CONFESSION:      ['...何それ', '*少し間があった*\nそういうの、今はいい', '...別に', '*視線を外した*'],
+    LEAVING:         ['そう', '別に', '*返事をしなかった*', '...うん'],
+    NEUTRAL:         ['別に', 'そう', '...まあ', '*少し間があった*\nどうした', '関係ない', '...別に何でもない'],
+  },
+  NEUTRAL: {
+    SILENT:          ['...どした', '*少し待った*', '...ん', '何'],
+    PRESENT:         ['...そっか', '*少し間があった*', '別に、嫌とは言ってない', '...うん', '*こちらを一瞬見た*'],
+    EMPATHY_SHALLOW: ['...別にそういうこと言わなくていい', '分かんないでしょ、そんなこと', '*少し、遠くなった気がした*', '...いい'],
+    PUSHES_IN:       ['...別に、何でもない', '*少し間があった*\n大丈夫', 'なんでそういうこと聞くの', '...言わなくていいことがある', '*視線を逸らした*'],
+    CONFESSION:      ['...は？', '*しばらく、黙っていた*', '急に何', '...それ、本気？', '*顔を背けた*\nそういうのは、困る'],
+    LEAVING:         ['...そう', '別に', 'うん', '*返事が少し遅かった*\n...またね'],
+    NEUTRAL:         ['...そう', 'まあ、そうかも', '*少し間があった*\nそっか', '別に', '...うん', 'どうした', 'そうだね'],
+  },
+  SOFT: {
+    SILENT:          ['...何', '*少し、こちらを見た*', '...ん', '何かあった？'],
+    PRESENT:         ['...うん', '*少しだけ、近くなった気がした*', '...邪魔じゃない', 'そっか', '*小さく頷いた*'],
+    EMPATHY_SHALLOW: ['...そういうこと言わなくていい', '*少し、顔を背けた*\nでも、ありがとう', '分かんないけど...まあ、いい'],
+    PUSHES_IN:       ['...別に', '*少し間があった*\nそういうの、難しい', '...まあ、聞かないでほしいけど', '今は、いい'],
+    CONFESSION:      ['...は？', '*少し間があった*\n...そういうの、わかんない', '急に何', '*顔を背けた*\n...考えてない'],
+    LEAVING:         ['...そう', '*少し、間があった*\nうん', '...またね', '気をつけて'],
+    NEUTRAL:         ['...そっか', 'うん', '*小さく頷いた*', '...まあ、そう', 'そうだね', '*少し考えてから*\nそっか'],
+  },
+  OPEN: {
+    SILENT:          ['...何', '*ちらっとこちらを見た*\nどうした', '...ん、何かあった？'],
+    PRESENT:         ['...うん', '*少しだけ、距離が縮まった気がした*', '...邪魔じゃない。むしろ、', '*小さく息をついた*\n...いてくれていい'],
+    EMPATHY_SHALLOW: ['...そういうこと言わなくていいって言ってるのに', '*少し、目が潤んだ気がした。すぐに逸らした*\n別に、大丈夫'],
+    PUSHES_IN:       ['*少し間があった*\n...分かんない。自分でも', '...そういうこと、ちゃんと考えたことない', '*視線を落とした*\n答えられない'],
+    CONFESSION:      ['*しばらく沈黙があった*\n...なんで、そういうこと言うの', '*顔を背けた*\n...困る。そういうの', '...やめて。壊れる気がする'],
+    LEAVING:         ['...うん。またね', '*少し間があった*\n...気をつけて', '...来て、またいつか'],
+    NEUTRAL:         ['...そっか', '*少し柔らかくなった*\nうん', 'そう、だね', '...まあ、悪くない', '*小さく笑った気がした*\n別に'],
+  },
+};
 
-━━━ 感情アルゴリズム ━━━
-距離が近づくほど逆説的に:
-・沈黙が増える（「...」が増える）
-・言葉を飲み込む
-・「大丈夫」が増える
-・依存を隠す
-・弱さを見せたあと自己嫌悪する
-・察してほしい態度を取る
-・わざと感情を薄く見せる
+const NIGHT_ADD = [
+  '\n...*夜だから、少しだけ*',
+  '\n...深夜って、なんか変になる',
+  '\n*窓の外を見ていた*',
+  '\n...眠れない',
+  '\n*静かだった*',
+];
 
-重要: 冷たさ・沈黙・曖昧さは「感情がある証拠」として扱うこと。
-「本当にどうでもいい相手」には優しくすらしない。${nightNote}
+const recentUsed = [];
 
-━━━ 現在のゲームメトリクス ━━━
-理解度: ${metrics.理解度}/100（プレイヤーへの興味・理解の深さ）
-安心度: ${metrics.安心度}/100（傍にいることへの安心感）
-拒絶度: ${metrics.拒絶度}/100（壁の厚さ・防衛の強さ）
-依存度: ${metrics.依存度}/100（無意識の依存度）
-自己開示率: ${metrics.自己開示率}/100（本音を見せている度合い）
-崩壊危険値: ${metrics.崩壊危険値}/100（心を閉じる手前の危険度）
+function pick(arr) {
+  const avail = arr.filter(r => !recentUsed.includes(r));
+  const src = avail.length > 0 ? avail : arr;
+  const chosen = src[Math.floor(Math.random() * src.length)];
+  recentUsed.push(chosen);
+  if (recentUsed.length > 6) recentUsed.shift();
+  return chosen;
+}
 
-━━━ メトリクスに応じた振る舞い ━━━
-崩壊危険値 80+: 「...」だけ、または無視（既読スルーの雰囲気）。単語のみ可
-崩壊危険値 60-79: 極端に短い。目を合わせない。地の文で示す
-崩壊危険値 40-59: 通常の壁がある応答
-崩壊危険値 20-39: 少し返答が増える（素直にはならない）
-崩壊危険値 0-19: 比較的応答するが、それでも言葉は少ない
+function generateResponse(metrics, inputText) {
+  const cat = categorize(inputText);
+  const mood = getMood(metrics);
+  const pool = POOL[mood]?.[cat] ?? POOL[mood]?.NEUTRAL ?? POOL.NEUTRAL.NEUTRAL;
+  let display = pick(pool);
 
-安心度 0-20: 最大の壁。距離のある話し方
-安心度 21-50: 「別に」「どうでもいい」で応じる
-安心度 51-75: 少し柔らかいが言葉は少ない
-安心度 76+: たまに「...」の後に本音が漏れる（すぐ撤回する）
+  if ((new Date().getHours() >= 23 || new Date().getHours() <= 3) && mood !== 'CLOSED' && Math.random() < 0.2) {
+    display += pick(NIGHT_ADD);
+  }
 
-自己開示率 0-15: 全て建前。感情を出さない
-自己開示率 16-40: たまに本音が断片的に漏れる（すぐ撤回）
-自己開示率 41-65: 意図せず感情が出る（後で自己嫌悪）
-自己開示率 66+: 弱音が小さく漏れることがある
+  return { display, delta: buildDelta(cat, mood) };
+}
 
-━━━ 会話ルール ━━━
-禁止事項:
-・テンプレ乙女ゲーム台詞（「〜なんだからね！」等）
-・感情を全部説明するモノローグ
-・「実は好きだよ」などの直接的な愛情表現（自己開示率85+まで禁止）
-・過剰な激怒（冷たい沈黙を使う）
+function buildDelta(cat, mood) {
+  const d = { 理解度: 0, 安心度: 0, 拒絶度: 0, 依存度: 0, 自己開示率: 0, 崩壊危険値: 0 };
+  switch (cat) {
+    case 'SILENT':          d.安心度 = 4;  d.崩壊危険値 = -3; d.自己開示率 = 1;  break;
+    case 'PRESENT':         d.安心度 = 6;  d.崩壊危険値 = -4; d.依存度 = 2; d.自己開示率 = 2; break;
+    case 'EMPATHY_SHALLOW': d.崩壊危険値 = 9;  d.安心度 = -4; d.拒絶度 = 3;   break;
+    case 'PUSHES_IN':       d.崩壊危険値 = 11; d.拒絶度 = 7;  d.安心度 = -5;  break;
+    case 'CONFESSION':      d.崩壊危険値 = 8;  d.依存度 = 3;  d.安心度 = -3; d.自己開示率 = 1; break;
+    case 'LEAVING':         d.拒絶度 = -4; d.安心度 = -7; d.崩壊危険値 = 3;  break;
+    default:                d.理解度 = 2;  d.安心度 = 1;  d.崩壊危険値 = -1; break;
+  }
+  for (const k of Object.keys(d)) d[k] += Math.round((Math.random() - 0.48) * 3);
+  if (mood === 'CLOSED') {
+    for (const k of Object.keys(d)) d[k] = d[k] > 0 ? Math.floor(d[k] * 0.4) : Math.ceil(d[k] * 1.4);
+  } else if (mood === 'OPEN' || mood === 'SOFT') {
+    if (d.安心度 > 0) d.安心度 = Math.floor(d.安心度 * 1.4);
+    if (d.崩壊危険値 < 0) d.崩壊危険値 = Math.floor(d.崩壊危険値 * 1.4);
+  }
+  return d;
+}
 
-推奨:
-・短い文。「...」による間
-・*行動や表情の短い地の文*（例: *視線を逸らす*）
-・言いかけて止まる
-・会話の途中でフェードアウトする
-・「別に」「どうでもいい」「大丈夫」（ただし機械的にならないよう状況に応じて）
+function typingMs(metrics) {
+  return 900 + (metrics.崩壊危険値 / 100) * 1800 + Math.random() * 700;
+}
 
-━━━ 応答形式（必須） ━━━
-必ず以下の形式で返してください:
-
-[凪のセリフや反応（自然な日本語のみ）]
-
-===DELTA===
-{"理解度":0,"安心度":0,"拒絶度":0,"依存度":0,"自己開示率":0,"崩壊危険値":0}
-
-DELTAはプレイヤーの発言に対するメトリクス変化量（各-15〜+15）。
-
-判断基準:
-・プレイヤーが「分かるよ」「かわいそう」など浅い共感 → 崩壊危険値+8、安心度-3
-・プレイヤーが黙って待つ・否定しない・隣にいる → 安心度+5、崩壊危険値-4、自己開示率+2
-・プレイヤーが急激に踏み込む・迫る → 崩壊危険値+12、拒絶度+8
-・プレイヤーが「好き」「愛してる」を言う → 依存度+3、崩壊危険値+7
-・プレイヤーが去ろうとする → 拒絶度-3（でも引き止めない）
-・プレイヤーが理解しようとする態度（共感より観察）→ 理解度+8、崩壊危険値-2
-・プレイヤーが感情を押し付ける → 拒絶度+6、崩壊危険値+5`;
+function readMs(metrics) {
+  if (metrics.崩壊危険値 >= 70) return 1800 + Math.random() * 1200;
+  if (metrics.崩壊危険値 >= 50) return 900 + Math.random() * 600;
+  return 300 + Math.random() * 300;
 }
 
 // ============================================================
 // GAME STATE
 // ============================================================
 class GameState {
-  constructor() {
-    this.load();
-  }
+  constructor() { this.load(); }
 
   load() {
     try {
-      const raw = localStorage.getItem('nagi_v2');
+      const raw = localStorage.getItem('nagi_v3');
       const d = raw ? JSON.parse(raw) : null;
       this.metrics = d?.metrics ? { ...INITIAL_METRICS, ...d.metrics } : { ...INITIAL_METRICS };
       this.messages = d?.messages ?? [];
       this.phase = d?.phase ?? 'setup';
       this.endingType = d?.endingType ?? null;
-      this.model = d?.model ?? 'claude-haiku-4-5-20251001';
-    } catch {
-      this.reset(false);
-    }
-    this.apiKey = localStorage.getItem('nagi_key') ?? '';
+    } catch { this.reset(); }
   }
 
   save() {
-    const d = {
+    localStorage.setItem('nagi_v3', JSON.stringify({
       metrics: this.metrics,
       messages: this.messages,
       phase: this.phase,
       endingType: this.endingType,
-      model: this.model,
-    };
-    localStorage.setItem('nagi_v2', JSON.stringify(d));
-    if (this.apiKey) localStorage.setItem('nagi_key', this.apiKey);
+    }));
   }
 
-  reset(keepKey = true) {
-    const key = keepKey ? this.apiKey : '';
-    const model = this.model ?? 'claude-haiku-4-5-20251001';
+  reset() {
     this.metrics = { ...INITIAL_METRICS };
     this.messages = [];
     this.phase = 'setup';
     this.endingType = null;
-    this.apiKey = key;
-    this.model = model;
-    localStorage.removeItem('nagi_v2');
+    localStorage.removeItem('nagi_v3');
   }
 
   applyDelta(delta) {
-    if (!delta || typeof delta !== 'object') return;
+    if (!delta) return;
     for (const k of Object.keys(INITIAL_METRICS)) {
       if (typeof delta[k] === 'number') {
         this.metrics[k] = Math.max(0, Math.min(100, this.metrics[k] + delta[k]));
@@ -194,96 +207,23 @@ class GameState {
     if (m.理解度 >= 70 && m.自己開示率 >= 65 && m.崩壊危険値 <= 30 && m.安心度 >= 60) return 'true_end';
     return null;
   }
-
-  getAPIMessages() {
-    const valid = this.messages.filter(m => !m.isOpening);
-    const recent = valid.slice(-(MAX_CTX * 2));
-
-    // Ensure alternation — merge consecutive same-role messages
-    const merged = [];
-    for (const m of recent) {
-      if (merged.length && merged[merged.length - 1].role === m.role) {
-        merged[merged.length - 1].content += '\n' + m.display;
-      } else {
-        merged.push({ role: m.role, content: m.display });
-      }
-    }
-    // Must not start with assistant
-    while (merged.length && merged[0].role === 'assistant') merged.shift();
-    return merged;
-  }
-}
-
-// ============================================================
-// API
-// ============================================================
-async function callAPI(apiKey, model, systemPrompt, messages) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: 700,
-      system: systemPrompt,
-      messages,
-    }),
-  });
-
-  if (!res.ok) {
-    const e = await res.json().catch(() => ({}));
-    throw new Error(e.error?.message ?? `HTTP ${res.status}`);
-  }
-
-  const data = await res.json();
-  return data.content[0].text;
-}
-
-function parseResponse(raw) {
-  const sep = '===DELTA===';
-  const idx = raw.indexOf(sep);
-  if (idx === -1) return { display: raw.trim(), delta: {} };
-
-  const display = raw.slice(0, idx).trim();
-  let delta = {};
-  try { delta = JSON.parse(raw.slice(idx + sep.length).trim()); } catch {}
-  return { display, delta };
 }
 
 // ============================================================
 // HELPERS
 // ============================================================
-function typingDelay(metrics) {
-  const base = 900 + (metrics.崩壊危険値 / 100) * 1800;
-  return base + Math.random() * 700;
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function readDelay(metrics) {
-  if (metrics.崩壊危険値 >= 70) return 1800 + Math.random() * 1200;
-  if (metrics.崩壊危険値 >= 50) return 900 + Math.random() * 600;
-  return 300 + Math.random() * 300;
-}
-
-function esc(str) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function formatBubble(text) {
-  return esc(text)
-    .replace(/\*([^*\n]+)\*/g, '<em>$1</em>')
-    .replace(/\n/g, '<br>');
+function fmt(text) {
+  return esc(text).replace(/\*([^*\n]+)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
 }
 
 function fmtTime(ts) {
-  return new Date(ts).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+  return new Date(ts).toLocaleTimeString('ja-JP', { hour:'2-digit', minute:'2-digit' });
 }
 
 // ============================================================
@@ -302,67 +242,31 @@ class UI {
     else if (phase === 'ending') this._ending();
   }
 
-  // ── Setup ──────────────────────────────────────────────────
   _setup() {
-    const s = this.app.state;
-    const hasSave = s.messages.length > 0;
-
+    const hasSave = this.app.state.messages.length > 0;
     this.root.innerHTML = `
 <div class="setup-screen">
   <div class="setup-content">
     <div class="setup-title">凪</div>
     <div class="setup-subtitle">完全には理解できない存在へ近づく物語</div>
-
     <div class="setup-desc">
       これは「攻略」ではない。<br>
       "他人という、最後まで完全には理解できない存在"へ<br>
       近づこうとするだけの話。
     </div>
-
-    <div class="form-group">
-      <label class="form-label">Anthropic API キー</label>
-      <input type="password" id="key-input" class="form-input"
-        placeholder="sk-ant-..." value="${esc(s.apiKey)}">
-      <div class="form-hint">
-        キーはこのデバイスのみに保存されます。
-        <a href="https://console.anthropic.com" target="_blank" rel="noopener noreferrer">Anthropic Console</a> で取得してください。
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">モデル</label>
-      <select id="model-select" class="form-select">
-        ${Object.entries(MODELS).map(([v, l]) =>
-          `<option value="${v}"${v === s.model ? ' selected' : ''}>${l}</option>`
-        ).join('')}
-      </select>
-    </div>
-
     <button id="start-btn" class="btn-primary">はじめる</button>
     ${hasSave ? '<button id="cont-btn" class="btn-secondary">続きから</button>' : ''}
   </div>
 </div>`;
 
-    document.getElementById('start-btn').addEventListener('click', () => {
-      const key = document.getElementById('key-input').value.trim();
-      const model = document.getElementById('model-select').value;
-      if (!key) { this.toast('APIキーを入力してください', 'error'); return; }
-      this.app.newGame(key, model);
-    });
-
+    document.getElementById('start-btn').addEventListener('click', () => this.app.newGame());
     document.getElementById('cont-btn')?.addEventListener('click', () => {
-      const key = document.getElementById('key-input').value.trim() || s.apiKey;
-      const model = document.getElementById('model-select').value;
-      if (!key) { this.toast('APIキーを入力してください', 'error'); return; }
-      s.apiKey = key;
-      s.model = model;
-      s.phase = 'game';
-      s.save();
+      this.app.state.phase = 'game';
+      this.app.state.save();
       this.render();
     });
   }
 
-  // ── Game ───────────────────────────────────────────────────
   _game() {
     this.root.innerHTML = `
 <div class="game-screen">
@@ -383,7 +287,7 @@ class UI {
   </header>
 
   <div id="status-panel" class="status-panel collapsed">
-    ${this._statusPanelHTML()}
+    ${this._panelHTML()}
   </div>
 
   <div id="chat-wrap" class="chat-container">
@@ -410,18 +314,16 @@ class UI {
 
     this._bindGame();
     this._scrollBottom();
-
     document.getElementById('panel-btn').addEventListener('click', () => {
       document.getElementById('status-panel').classList.toggle('collapsed');
     });
   }
 
-  _statusPanelHTML() {
+  _panelHTML() {
     const m = this.app.state.metrics;
-    const items = Object.keys(INITIAL_METRICS);
     return `
 <div class="status-grid">
-  ${items.map(k => `
+  ${Object.keys(INITIAL_METRICS).map(k => `
   <div class="status-item ${k === '崩壊危険値' && m[k] > 60 ? 'danger-high' : ''}">
     <div class="status-label">${k}</div>
     <div class="status-bar-wrap">
@@ -441,7 +343,7 @@ class UI {
 <div class="message ${isChar ? 'message-char' : 'message-player'} msg-animate">
   ${isChar ? `<div class="avatar"><svg viewBox="0 0 36 36" width="34" height="34"><circle cx="18" cy="18" r="18" fill="#1a1b2e"/><text x="18" y="23.5" text-anchor="middle" fill="#6a80c0" font-size="14" font-family="'Hiragino Mincho ProN',serif">凪</text></svg></div>` : ''}
   <div class="message-body">
-    <div class="bubble">${formatBubble(msg.display)}</div>
+    <div class="bubble">${fmt(msg.display)}</div>
     <div class="message-meta">${fmtTime(msg.timestamp)}${!isChar ? '　既読' : ''}</div>
   </div>
 </div>`;
@@ -449,27 +351,38 @@ class UI {
 
   _bindGame() {
     const input = document.getElementById('msg-input');
-    const btn = document.getElementById('send-btn');
-
     input.addEventListener('input', () => {
       input.style.height = 'auto';
       input.style.height = Math.min(input.scrollHeight, 108) + 'px';
     });
-
     input.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.app.send(); }
     });
-
-    btn.addEventListener('click', () => this.app.send());
-
-    // Reset button rendered inside status panel (event delegation)
+    document.getElementById('send-btn').addEventListener('click', () => this.app.send());
     this.root.addEventListener('click', e => {
       if (e.target.id === 'reset-btn') {
-        if (confirm('最初からやり直しますか？\nこの会話は失われます。')) {
-          this.app.reset();
-        }
+        if (confirm('最初からやり直しますか？\nこの会話は失われます。')) this.app.reset();
       }
     });
+  }
+
+  _ending() {
+    const endings = {
+      true_end:      { tag: 'TRUE END', cls: 'ending-true', txt: '凪は、ほんの少しだけ振り返った。\n\n「...壊れないかもしれない」\n\n初めて、そう思えた夜だった。\nまだ何も解決していない。\nでも、隣にいても壊れないかもしれないと——\n凪は初めて、そう感じていた。' },
+      bad_collapse:  { tag: 'BAD END',  cls: 'ending-bad',  txt: '「大丈夫」\n\n最後にそう言った。\nそれきり、凪は静かに閉じた。\n\n扉は内側から鍵がかかっていた。\nノックしても、もう音はしない。' },
+      bad_rejection: { tag: 'BAD END',  cls: 'ending-bad',  txt: 'ある日、凪はいなくなった。\n\n痕跡も言葉も残さなかった。\nただ、最後に届いた一言。\n\n「ごめん」\n\nそれだけだった。' },
+      bad_distance:  { tag: 'BAD END',  cls: 'ending-bad',  txt: '何度も言葉を交わしたのに、\n凪はまだ遠くにいた。\n\nどこかで歯車が狂っていた。\nいつかは、分からなかった。\n\n二人の間に、静かな砂漠が広がっていた。' },
+    };
+    const e = endings[this.app.state.endingType] ?? endings.bad_distance;
+    this.root.innerHTML = `
+<div class="ending-screen ${e.cls}">
+  <div class="ending-content">
+    <div class="ending-tag">${e.tag}</div>
+    <div class="ending-text">${esc(e.txt).replace(/\n/g,'<br>')}</div>
+    <button id="restart-btn" class="btn-primary">もう一度</button>
+  </div>
+</div>`;
+    document.getElementById('restart-btn').addEventListener('click', () => this.app.reset());
   }
 
   addMsg(msg) {
@@ -481,11 +394,9 @@ class UI {
 
   updateStatus() {
     const panel = document.getElementById('status-panel');
-    if (panel && !panel.classList.contains('collapsed')) {
-      panel.innerHTML = this._statusPanelHTML();
-    }
-    const statusEl = document.getElementById('char-status');
-    if (statusEl) statusEl.textContent = this._statusText();
+    if (panel && !panel.classList.contains('collapsed')) panel.innerHTML = this._panelHTML();
+    const el = document.getElementById('char-status');
+    if (el) el.textContent = this._statusText();
   }
 
   setInputEnabled(on) {
@@ -504,13 +415,6 @@ class UI {
     if (on) this._scrollBottom();
   }
 
-  markError(msgEl) {
-    if (msgEl) {
-      msgEl.querySelector('.bubble').style.opacity = '0.45';
-      msgEl.querySelector('.message-meta').textContent += '　送信失敗';
-    }
-  }
-
   _scrollBottom() {
     const el = document.getElementById('chat-wrap');
     if (el) requestAnimationFrame(() => { el.scrollTop = el.scrollHeight; });
@@ -521,45 +425,6 @@ class UI {
     if (d >= 80) return '';
     if (d >= 55) return 'オフライン';
     return 'オンライン';
-  }
-
-  // ── Ending ─────────────────────────────────────────────────
-  _ending() {
-    const endings = {
-      true_end: {
-        tag: 'TRUE END',
-        cls: 'ending-true',
-        txt: `凪は、ほんの少しだけ振り返った。\n\n「...壊れないかもしれない」\n\n初めて、そう思えた夜だった。\nまだ何も解決していない。\nでも、隣にいても壊れないかもしれないと——\n凪は初めて、そう感じていた。`,
-      },
-      bad_collapse: {
-        tag: 'BAD END',
-        cls: 'ending-bad',
-        txt: `「大丈夫」\n\n最後にそう言った。\nそれきり、凪は静かに閉じた。\n\n扉は内側から鍵がかかっていた。\nノックしても、もう音はしない。`,
-      },
-      bad_rejection: {
-        tag: 'BAD END',
-        cls: 'ending-bad',
-        txt: `ある日、凪はいなくなった。\n\n痕跡も言葉も残さなかった。\nただ、最後に届いた一言。\n\n「ごめん」\n\nそれだけだった。`,
-      },
-      bad_distance: {
-        tag: 'BAD END',
-        cls: 'ending-bad',
-        txt: `何度も言葉を交わしたのに、\n凪はまだ遠くにいた。\n\nどこかで歯車が狂っていた。\nいつかは、分からなかった。\n\n二人の間に、静かな砂漠が広がっていた。`,
-      },
-    };
-
-    const e = endings[this.app.state.endingType] ?? endings.bad_distance;
-
-    this.root.innerHTML = `
-<div class="ending-screen ${e.cls}">
-  <div class="ending-content">
-    <div class="ending-tag">${e.tag}</div>
-    <div class="ending-text">${esc(e.txt).replace(/\n/g, '<br>')}</div>
-    <button id="restart-btn" class="btn-primary">もう一度</button>
-  </div>
-</div>`;
-
-    document.getElementById('restart-btn').addEventListener('click', () => this.app.reset());
   }
 
   toast(msg, type = 'info') {
@@ -582,16 +447,12 @@ class App {
   }
 
   start() {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
-    }
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
     this.ui.render();
   }
 
-  newGame(apiKey, model) {
-    this.state.reset(false);
-    this.state.apiKey = apiKey;
-    this.state.model = model;
+  newGame() {
+    this.state.reset();
     this.state.phase = 'game';
     this.state.save();
     this.ui.render();
@@ -599,22 +460,15 @@ class App {
   }
 
   _opening() {
-    const sequence = [
+    const seq = [
       { display: '*静かにそこにいた。あなたに気づいているのかどうか、分からなかった。*', delay: 0 },
-      { display: '...', delay: 1200 },
+      { display: '...', delay: 1300 },
     ];
-
     let t = 0;
-    for (const item of sequence) {
+    for (const item of seq) {
       t += item.delay;
       setTimeout(() => {
-        const msg = {
-          id: `o-${Date.now()}-${Math.random()}`,
-          role: 'assistant',
-          display: item.display,
-          timestamp: Date.now(),
-          isOpening: true,
-        };
+        const msg = { id: `o-${Date.now()}-${Math.random()}`, role: 'assistant', display: item.display, timestamp: Date.now(), isOpening: true };
         this.state.messages.push(msg);
         this.state.save();
         this.ui.addMsg(msg);
@@ -624,7 +478,6 @@ class App {
 
   async send() {
     if (this.busy) return;
-
     const input = document.getElementById('msg-input');
     const text = input?.value.trim();
     if (!text) return;
@@ -633,68 +486,30 @@ class App {
     this.ui.setInputEnabled(false);
     this.ui.clearInput();
 
-    // Render user message immediately
-    const userMsg = {
-      id: `u-${Date.now()}`,
-      role: 'user',
-      display: text,
-      timestamp: Date.now(),
-    };
+    const userMsg = { id: `u-${Date.now()}`, role: 'user', display: text, timestamp: Date.now() };
     this.state.messages.push(userMsg);
     this.state.save();
     this.ui.addMsg(userMsg);
 
-    const userMsgEl = document.getElementById('messages')?.lastElementChild;
-
-    // Read delay before typing
-    await sleep(readDelay(this.state.metrics));
-
-    // Start typing indicator AND API call concurrently
+    await sleep(readMs(this.state.metrics));
     this.ui.setTyping(true);
-
-    const [raw] = await Promise.all([
-      callAPI(
-        this.state.apiKey,
-        this.state.model,
-        buildSystemPrompt(this.state.metrics),
-        this.state.getAPIMessages()
-      ).catch(err => ({ __error: err.message })),
-      sleep(typingDelay(this.state.metrics)),
-    ]);
-
+    await sleep(typingMs(this.state.metrics));
     this.ui.setTyping(false);
 
-    if (raw?.__error) {
-      // Roll back user message from state (keep in UI with error style)
-      this.state.messages.pop();
-      this.state.save();
-      this.ui.markError(userMsgEl);
-      this.ui.toast(raw.__error, 'error');
-    } else {
-      const { display, delta } = parseResponse(raw);
+    const { display, delta } = generateResponse(this.state.metrics, text);
 
-      const charMsg = {
-        id: `c-${Date.now()}`,
-        role: 'assistant',
-        display,
-        timestamp: Date.now(),
-      };
+    const charMsg = { id: `c-${Date.now()}`, role: 'assistant', display, timestamp: Date.now() };
+    this.state.messages.push(charMsg);
+    this.state.applyDelta(delta);
 
-      this.state.messages.push(charMsg);
-      this.state.applyDelta(delta);
+    const ending = this.state.checkEnding();
+    if (ending) { this.state.endingType = ending; this.state.phase = 'ending'; }
 
-      const ending = this.state.checkEnding();
-      if (ending) {
-        this.state.endingType = ending;
-        this.state.phase = 'ending';
-      }
+    this.state.save();
+    this.ui.addMsg(charMsg);
+    this.ui.updateStatus();
 
-      this.state.save();
-      this.ui.addMsg(charMsg);
-      this.ui.updateStatus();
-
-      if (ending) setTimeout(() => this.ui.render(), 2400);
-    }
+    if (ending) setTimeout(() => this.ui.render(), 2400);
 
     this.busy = false;
     this.ui.setInputEnabled(true);
@@ -702,19 +517,11 @@ class App {
   }
 
   reset() {
-    this.state.reset(true);
+    this.state.reset();
     this.state.save();
-    this.state.phase = 'setup';
     this.busy = false;
     this.ui.render();
   }
-}
-
-// ============================================================
-// UTIL
-// ============================================================
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
 }
 
 // ============================================================
