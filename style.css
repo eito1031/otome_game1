@@ -140,7 +140,7 @@ body { background:#fff; font-family:var(--font); -webkit-font-smoothing:antialia
 /* Character */
 .char-area {
   position:absolute; bottom:0; left:50%; transform:translateX(-50%);
-  height:92%;
+  width:92%; height:88%;
   display:flex; align-items:center; justify-content:center;
   transition:opacity .4s ease, transform .4s ease;
   pointer-events:none;
@@ -149,8 +149,9 @@ body { background:#fff; font-family:var(--font); -webkit-font-smoothing:antialia
 .char-area svg { height:100%; width:auto; max-width:320px; }
 
 .chara-img {
-  height:100%; width:auto; max-width:320px;
-  object-fit:contain; display:block;
+  max-height:100%; max-width:100%;
+  width:auto; height:auto;
+  display:block;
   transition:filter 0.4s ease;
 }
 
@@ -276,7 +277,7 @@ body { background:#fff; font-family:var(--font); -webkit-font-smoothing:antialia
 .ending-good   .ending-tag { background:#48a96e; box-shadow:0 2px 12px rgba(72,169,110,.3); }
 .ending-normal .ending-tag { background:#8888a0; box-shadow:none; }
 .ending-bad    .ending-tag { background:#7070a8; box-shadow:none; }
-.ending-char { width:150px; filter:drop-shadow(0 4px 16px rgba(200,100,150,.3)); }
+.ending-char { width:200px; }
 .ending-text {
   font-size:.97rem; line-height:2.1; color:var(--text-2);
   font-family:var(--serif); white-space:pre-wrap;

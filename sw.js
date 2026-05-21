@@ -1,4 +1,4 @@
-const CACHE = 'eito-v14';
+const CACHE = 'eito-v15';
 
 self.addEventListener('install', e => {
   const base = self.registration.scope;
