@@ -355,7 +355,7 @@ class App {
 <div class="setup-screen">
   <div class="setup-wrap">
     <div class="setup-logo">画面越しのエトセトラ</div>
-    <div class="setup-tagline">凪になるのを</div>
+    <div class="setup-tagline">アプリで知り合った、えいとの話。</div>
     <div class="setup-card">
       プロフィール写真は一枚だけ。<br>
       それでも、会ってみることにした。
