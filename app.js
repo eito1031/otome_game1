@@ -13,8 +13,37 @@ const M_COLORS = {
 };
 
 // ============================================================
-// CHARACTER IMAGE  (えいと — chara.jpeg)
+// CHARACTER IMAGE  (えいと — chara.jpeg, Canvas白抜き)
 // ============================================================
+let _charaUrl = 'chara.jpeg';
+
+function _processCharaImage() {
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const id = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const d = id.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const r = d[i], g = d[i+1], b = d[i+2];
+      const max = Math.max(r, g, b);
+      const sat = max - Math.min(r, g, b);
+      if (r > 238 && g > 238 && b > 238 && sat < 18) {
+        d[i+3] = 0;
+      } else if (r > 220 && g > 220 && b > 220 && sat < 25) {
+        d[i+3] = Math.round((max - 220) / 35 * 255);
+        d[i+3] = 255 - d[i+3];
+      }
+    }
+    ctx.putImageData(id, 0, 0);
+    _charaUrl = canvas.toDataURL('image/png');
+  };
+  img.src = 'chara.jpeg';
+}
+
 function charSVG(expr) {
   const e = expr || 'neutral';
   const filters = {
@@ -22,7 +51,7 @@ function charSVG(expr) {
     cold:    'saturate(0.4) brightness(0.88) hue-rotate(5deg)',
     soft:    'saturate(1.1) brightness(1.04)',
   };
-  return `<img src="chara.jpeg" class="chara-img" alt="えいと" style="filter:${filters[e] || filters.neutral}">`;
+  return `<img src="${_charaUrl}" class="chara-img" alt="えいと" style="filter:${filters[e] || filters.neutral}">`;
 }
 
 // ============================================================
@@ -309,6 +338,7 @@ class App {
 
   start() {
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+    _processCharaImage();
     this.render();
   }
 
