@@ -9,7 +9,7 @@ self.addEventListener('install', e => {
     base + 'app.js',
     base + 'manifest.json',
     base + 'icon.svg',
-    base + 'chara.png',
+    base + 'chara.jpeg',
   ];
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
   self.skipWaiting();

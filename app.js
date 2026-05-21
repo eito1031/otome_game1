@@ -22,7 +22,7 @@ function charSVG(expr) {
     cold:    'saturate(0.45) brightness(0.86) hue-rotate(5deg)',
     soft:    'saturate(1.08) brightness(1.02)',
   };
-  return `<img src="chara.png" class="chara-img" alt="えいと"
+  return `<img src="chara.jpeg" class="chara-img" alt="えいと"
     style="filter:${filters[e] || filters.neutral}"/>`;
 }
 
