@@ -12,6 +12,14 @@ const M_COLORS = {
   依存度:'#bd5bd4', 自己開示率:'#5bbdd4', 無関心度:'#d45b5b',
 };
 
+const INITIAL_METRICS_2 = {
+  親密度: 20, 信頼度: 20, 素直さ: 10, ドキドキ: 15, 安定度: 20,
+};
+const M_COLORS_2 = {
+  親密度:'#f06292', 信頼度:'#5b7fd4', 素直さ:'#5bd490',
+  ドキドキ:'#d45b5b', 安定度:'#bd5bd4',
+};
+
 // ============================================================
 // CHARACTER IMAGE  (えいと — chara.jpeg, Canvas白抜き)
 // ============================================================
@@ -221,6 +229,108 @@ const SCENES = [
 ];
 
 // ============================================================
+// CHAPTER 2 SCENES  (付き合ってからの物語)
+// ============================================================
+const SCENES_2 = [
+  {
+    bg: 'hallway', expr: 'neutral',
+    narration: '付き合って、最初の週末。\nえいとから「どっか行くか」と連絡が来た。',
+    speaker: 'えいと', text: '...どこ行きたい\n（珍しく、聞いてきた）',
+    choices: [
+      { label: '決めていい？',
+        res: '...任せる\n*短く、でも嫌じゃなさそうだった*', resExpr: 'soft',
+        d: { 親密度:6, 信頼度:3 } },
+      { label: 'えいとはどこ行きたい',
+        res: 'どこでも\n*でも少し考えてるみたいだった*', resExpr: 'neutral',
+        d: { 信頼度:4, 素直さ:2 } },
+      { label: '家でいい',
+        res: '...え\n*意外そうな顔をした*', resExpr: 'cold',
+        d: { ドキドキ:4, 親密度:2, 安定度:-2 } },
+    ],
+  },
+  {
+    bg: 'evening', expr: 'neutral',
+    narration: '帰り道。\n人が少なくなったとき、えいとの手が触れた。',
+    speaker: 'えいと', text: '...（何も言わない）',
+    choices: [
+      { label: '（そっと握り返す）',
+        res: '...*指を絡めてきた*', resExpr: 'soft',
+        d: { 親密度:8, ドキドキ:4 } },
+      { label: '（そのまま、黙って歩く）',
+        res: '...*少し歩幅を合わせてきた*', resExpr: 'soft',
+        d: { 親密度:6, 安定度:3 } },
+      { label: '手、繋いでるね（笑）',
+        res: '...うるさい\n*でも手は離さなかった*', resExpr: 'neutral',
+        d: { ドキドキ:5, 素直さ:1 } },
+    ],
+  },
+  {
+    bg: 'night', expr: 'neutral',
+    narration: '夜、えいとから「今何してる」と来た。\nLINEで話すようになってきた。',
+    speaker: 'えいと', text: '今何してる',
+    choices: [
+      { label: 'えいとのこと考えてた',
+        res: '...嘘つくな\n*でも返信が早かった*', resExpr: 'soft',
+        d: { ドキドキ:5, 素直さ:3 } },
+      { label: 'ごろごろしてる、えいとは？',
+        res: 'おれも\n*それだけだった*', resExpr: 'neutral',
+        d: { 親密度:5, 安定度:3 } },
+      { label: '（既読して少し待ってから返す）',
+        res: '...\n*少しして「寝てた？」と来た*', resExpr: 'soft',
+        d: { 親密度:6, 信頼度:2 } },
+    ],
+  },
+  {
+    bg: 'hallway', expr: 'neutral',
+    narration: 'えいとの部屋に、初めて行った。\n思ったより、きれいだった。',
+    speaker: 'えいと', text: '...適当にしてていい\n（ぶっきらぼうだけど、案内してくれた）',
+    choices: [
+      { label: 'えいとの部屋って感じがする',
+        res: '...そうか\n*少し嬉しそうだった*', resExpr: 'soft',
+        d: { 素直さ:6, 親密度:5 } },
+      { label: '（えいとのものを、ひとつひとつ見る）',
+        res: '...見すぎ\n*でも止めなかった*', resExpr: 'neutral',
+        d: { 親密度:7, ドキドキ:3 } },
+      { label: 'また来てもいい？',
+        res: '...まあ\n*それだけだったけど、笑ってた*', resExpr: 'soft',
+        d: { 親密度:8, 素直さ:4 } },
+    ],
+  },
+  {
+    bg: 'evening', expr: 'neutral',
+    narration: 'えいとが、珍しく静かだった。\nしばらくして、ぽつりと言った。',
+    speaker: 'えいと', text: '...俺のこと、どう思ってる\n（珍しく、直接聞いてきた）',
+    choices: [
+      { label: '好き、ずっと',
+        res: '...そっか\n*短く、でも嬉しそうだった*', resExpr: 'soft',
+        d: { 素直さ:8, 親密度:6 } },
+      { label: 'えいとも聞いていい？',
+        res: '...おれは\n*少し間があった*\n好きだよ', resExpr: 'soft',
+        d: { 素直さ:10, 親密度:7, 信頼度:5 } },
+      { label: '（黙って、えいとの手を握る）',
+        res: '...*しばらく、そのままでいた*', resExpr: 'soft',
+        d: { 親密度:8, 安定度:5 } },
+    ],
+  },
+  {
+    bg: 'spring', expr: 'soft',
+    narration: '桜の季節が、また来た。\nえいとと、並んで歩いていた。',
+    speaker: 'えいと', text: '...来年も、こうしてたい\n（珍しく、そんなことを言った）',
+    choices: [
+      { label: 'うん、そうしよう',
+        res: '...ああ\n*少し笑った*', resExpr: 'soft',
+        d: { 素直さ:5, 親密度:5, 安定度:4 } },
+      { label: '（黙って、えいとに寄り添う）',
+        res: '...*腕を回してきた*', resExpr: 'soft',
+        d: { 親密度:8, 安定度:5 } },
+      { label: 'えいとって、たまにロマンチック',
+        res: '...うるさい\n*でも、機嫌が良かった*', resExpr: 'soft',
+        d: { ドキドキ:5, 素直さ:4, 親密度:4 } },
+    ],
+  },
+];
+
+// ============================================================
 // ENDINGS
 // ============================================================
 const ENDINGS = {
@@ -246,6 +356,35 @@ const ENDINGS = {
   },
 };
 
+const ENDINGS_2 = {
+  best_end2: {
+    cls:'ending-best', tag:'BEST END', expr:'soft',
+    text:'えいとが、少しずつ素直になってきた。\n\n「好きだよ」\n\nそう言えるようになった。\nえいとにしては、珍しいことだった。\n\nそれが、えいとなりの精一杯だと知っていた。\n\nたぶん、ずっとこのままだ。\nでも、それでよかった。',
+  },
+  good_end2: {
+    cls:'ending-good', tag:'GOOD END', expr:'neutral',
+    text:'ゆっくりと、確かに近づいてきた。\n\nえいとはまだぎこちない。\nでも、そばにいようとしてくれていた。\n\nそれだけで、十分だった。',
+  },
+  normal_end2: {
+    cls:'ending-normal', tag:'NORMAL END', expr:'neutral',
+    text:'付き合っていても、\nえいとは変わらず少し遠かった。\n\n嫌いになったわけじゃない。\nただ、もう少し時間がかかりそうだった。',
+  },
+  bad_end2: {
+    cls:'ending-bad', tag:'BAD END', expr:'cold',
+    text:'えいとが、静かに言った。\n\n「俺、こういうの向いてないかも」\n\n怒っているわけじゃない。\nただ、えいとは正直だった。\n\n────それで、終わった。',
+  },
+};
+
+function getEnding2(metrics, sceneIdx) {
+  if (metrics.安定度 <= 5) return 'bad_end2';
+  if (sceneIdx >= SCENES_2.length) {
+    if (metrics.親密度 >= 55 && metrics.素直さ >= 28) return 'best_end2';
+    if (metrics.親密度 >= 35 && metrics.安定度 >= 30) return 'good_end2';
+    return 'normal_end2';
+  }
+  return null;
+}
+
 function getEnding(metrics, sceneIdx) {
   const m = metrics;
   if (m.無関心度 >= 80) return 'bad_collapse';
@@ -267,7 +406,9 @@ class GameState {
   load() {
     try {
       const d = JSON.parse(localStorage.getItem('eito_vn1') || 'null');
-      this.metrics     = d?.metrics     ? { ...INITIAL_METRICS, ...d.metrics } : { ...INITIAL_METRICS };
+      this.chapter     = d?.chapter     ?? 1;
+      const initM      = this.chapter === 2 ? INITIAL_METRICS_2 : INITIAL_METRICS;
+      this.metrics     = d?.metrics     ? { ...initM, ...d.metrics } : { ...initM };
       this.phase       = d?.phase       ?? 'setup';
       this.sceneIndex  = d?.sceneIndex  ?? 0;
       this.endingType  = d?.endingType  ?? null;
@@ -278,6 +419,7 @@ class GameState {
     localStorage.setItem('eito_vn1', JSON.stringify({
       metrics: this.metrics, phase: this.phase,
       sceneIndex: this.sceneIndex, endingType: this.endingType,
+      chapter: this.chapter,
     }));
   }
 
@@ -286,6 +428,7 @@ class GameState {
     this.phase      = 'setup';
     this.sceneIndex = 0;
     this.endingType = null;
+    this.chapter    = 1;
     localStorage.removeItem('eito_vn1');
   }
 
@@ -382,16 +525,20 @@ class App {
 
   // ── SCENE ────────────────────────────────────────
   _renderScene() {
+    const scenes = this.state.chapter === 2 ? SCENES_2 : SCENES;
     const si = this.state.sceneIndex;
-    if (si >= SCENES.length) { this._triggerEnding(); return; }
-    const scene = SCENES[si];
+    if (si >= scenes.length) { this._triggerEnding(); return; }
+    const scene = scenes[si];
+    const label = this.state.chapter === 2
+      ? `Ch.2 &nbsp; SCENE ${si + 1} / ${scenes.length}`
+      : `SCENE ${si + 1} / ${scenes.length}`;
 
     this.root.innerHTML = `
 <div class="vn-screen scene-fade">
   <div class="scene-bg bg-${scene.bg}" id="scene-bg">
     <div class="char-area" id="char-area">${charSVG(scene.expr)}</div>
     <div class="vn-hud">
-      <div class="scene-label">SCENE ${si + 1} / ${SCENES.length}</div>
+      <div class="scene-label">${label}</div>
       <button class="btn-menu" id="menu-btn">メニュー</button>
     </div>
   </div>
@@ -484,8 +631,9 @@ class App {
 
     this.state.applyDelta(choice.d);
 
-    const early = getEnding(this.state.metrics, this.state.sceneIndex);
-    if (early && (early === 'bad_collapse' || early === 'bad_rejection')) {
+    const endingFn = this.state.chapter === 2 ? getEnding2 : getEnding;
+    const early = endingFn(this.state.metrics, this.state.sceneIndex);
+    if (early && early.startsWith('bad_')) {
       this.state.endingType = early;
       this.state.phase = 'ending';
       this.state.save();
@@ -530,7 +678,8 @@ class App {
 
   _nextScene() {
     this.state.sceneIndex++;
-    const ending = getEnding(this.state.metrics, this.state.sceneIndex);
+    const endingFn = this.state.chapter === 2 ? getEnding2 : getEnding;
+    const ending = endingFn(this.state.metrics, this.state.sceneIndex);
     if (ending) {
       this.state.endingType = ending;
       this.state.phase = 'ending';
@@ -543,7 +692,9 @@ class App {
   }
 
   _triggerEnding() {
-    const ending = getEnding(this.state.metrics, this.state.sceneIndex) || 'normal_end';
+    const endingFn = this.state.chapter === 2 ? getEnding2 : getEnding;
+    const fallback = this.state.chapter === 2 ? 'normal_end2' : 'normal_end';
+    const ending = endingFn(this.state.metrics, this.state.sceneIndex) || fallback;
     this.state.endingType = ending;
     this.state.phase = 'ending';
     this.state.save();
@@ -552,8 +703,15 @@ class App {
 
   // ── ENDING ───────────────────────────────────────
   _renderEnding() {
-    const e = ENDINGS[this.state.endingType] ?? ENDINGS.normal_end;
-    const m = this.state.metrics;
+    const isC2   = this.state.chapter === 2;
+    const ends   = isC2 ? ENDINGS_2 : ENDINGS;
+    const fallback = isC2 ? ENDINGS_2.normal_end2 : ENDINGS.normal_end;
+    const e      = ends[this.state.endingType] ?? fallback;
+    const colors = isC2 ? M_COLORS_2 : M_COLORS;
+    const m      = this.state.metrics;
+    const nextBtn = this.state.endingType === 'best_end'
+      ? `<button id="next-ch-btn" class="btn-start" style="margin-top:.5rem;background:linear-gradient(135deg,#9c88b8,#7c68a8);box-shadow:0 4px 18px rgba(124,104,168,.35)">付き合ってからの物語へ ▶</button>`
+      : '';
     this.root.innerHTML = `
 <div class="ending-screen ${e.cls}">
   <div class="ending-wrap">
@@ -563,18 +721,30 @@ class App {
     <div class="ending-metrics">
       ${Object.entries(m).map(([k,v]) =>
         `<div class="em-item">
-          <div class="em-dot" style="background:${M_COLORS[k]}"></div>
+          <div class="em-dot" style="background:${colors[k] ?? '#aaa'}"></div>
           ${k} ${v}
         </div>`
       ).join('')}
     </div>
+    ${nextBtn}
     <button id="restart-btn" class="btn-start" style="margin-top:.5rem">もう一度</button>
   </div>
 </div>`;
+    document.getElementById('next-ch-btn')?.addEventListener('click', () => this._startChapter2());
     document.getElementById('restart-btn').addEventListener('click', () => {
       this.state.reset();
       this.render();
     });
+  }
+
+  _startChapter2() {
+    this.state.chapter    = 2;
+    this.state.metrics    = { ...INITIAL_METRICS_2 };
+    this.state.sceneIndex = 0;
+    this.state.phase      = 'game';
+    this.state.endingType = null;
+    this.state.save();
+    this._renderScene();
   }
 
   // ── MENU ─────────────────────────────────────────
