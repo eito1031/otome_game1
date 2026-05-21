@@ -1,4 +1,4 @@
-const CACHE = 'nagi-v3';
+const CACHE = 'eito-v1';
 
 self.addEventListener('install', e => {
   const base = self.registration.scope;

@@ -13,229 +13,226 @@ const M_COLORS = {
 };
 
 // ============================================================
-// CHARACTER SVG
+// CHARACTER SVG  (えいと — 22歳・男)
 // ============================================================
 function charSVG(expr) {
   const eyes = {
-    neutral: `<ellipse cx="84" cy="118" rx="10" ry="11" fill="#4a5a8a"/>
-      <ellipse cx="84" cy="118" rx="10" ry="11" fill="#4a5a8a"/>
-      <circle cx="87" cy="114" r="4" fill="white"/>
-      <ellipse cx="116" cy="118" rx="10" ry="11" fill="#4a5a8a"/>
-      <circle cx="119" cy="114" r="4" fill="white"/>`,
-    cold: `<ellipse cx="84" cy="117" rx="10" ry="8.5" fill="#4a5a8a"/>
+    neutral: `<ellipse cx="84" cy="118" rx="10" ry="9.5" fill="#4a5a8a"/>
       <circle cx="87" cy="114" r="3.5" fill="white"/>
-      <ellipse cx="116" cy="117" rx="10" ry="8.5" fill="#4a5a8a"/>
+      <ellipse cx="116" cy="118" rx="10" ry="9.5" fill="#4a5a8a"/>
       <circle cx="119" cy="114" r="3.5" fill="white"/>`,
-    soft: `<ellipse cx="84" cy="120" rx="10" ry="11" fill="#5a6a9a"/>
+    cold: `<ellipse cx="84" cy="117" rx="10" ry="7" fill="#4a5a8a"/>
+      <circle cx="87" cy="114" r="3" fill="white"/>
+      <ellipse cx="116" cy="117" rx="10" ry="7" fill="#4a5a8a"/>
+      <circle cx="119" cy="114" r="3" fill="white"/>`,
+    soft: `<ellipse cx="84" cy="120" rx="10" ry="10" fill="#5a6a9a"/>
       <circle cx="87" cy="116" r="4" fill="white"/>
-      <ellipse cx="116" cy="120" rx="10" ry="11" fill="#5a6a9a"/>
+      <ellipse cx="116" cy="120" rx="10" ry="10" fill="#5a6a9a"/>
       <circle cx="119" cy="116" r="4" fill="white"/>`,
   };
   const mouths = {
-    neutral: `<path d="M92 140 Q100 143 108 140" stroke="#d4886a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
-    cold:    `<path d="M92 142 Q100 139 108 142" stroke="#d4886a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
-    soft:    `<path d="M92 138 Q100 145 108 138" stroke="#d4886a" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    neutral: `<path d="M90 140 Q100 143 110 140" stroke="#d4886a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+    cold:    `<path d="M90 142 Q100 139 110 142" stroke="#d4886a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+    soft:    `<path d="M90 138 Q100 146 110 138" stroke="#d4886a" stroke-width="2" fill="none" stroke-linecap="round"/>`,
   };
   const e = expr || 'neutral';
   const blush = e === 'soft'
-    ? `<ellipse cx="72" cy="127" rx="11" ry="7" fill="rgba(255,120,140,.25)"/>
-       <ellipse cx="128" cy="127" rx="11" ry="7" fill="rgba(255,120,140,.25)"/>`
+    ? `<ellipse cx="72" cy="128" rx="11" ry="7" fill="rgba(255,120,140,.22)"/>
+       <ellipse cx="128" cy="128" rx="11" ry="7" fill="rgba(255,120,140,.22)"/>`
     : '';
 
   return `<svg viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
   <ellipse cx="100" cy="377" rx="54" ry="7" fill="rgba(0,0,0,.08)"/>
-  <rect x="74" y="272" width="20" height="82" rx="9" fill="#2d2d42"/>
-  <rect x="106" y="272" width="20" height="82" rx="9" fill="#2d2d42"/>
-  <ellipse cx="84" cy="356" rx="16" ry="9" fill="#1e1e2e"/>
-  <ellipse cx="116" cy="356" rx="16" ry="9" fill="#1e1e2e"/>
-  <path d="M62 188 Q58 230 56 275 L144 275 Q142 230 138 188 Z" fill="#eef2ff"/>
-  <path d="M88 170 L100 208 L112 170 Q106 176 100 174 Q94 176 88 170Z" fill="#e85a6a"/>
-  <path d="M62 188 Q58 230 56 275 L82 275 L82 182Z" fill="#3a4778"/>
-  <path d="M118 182 L118 275 L144 275 Q142 230 138 188Z" fill="#3a4778"/>
-  <path d="M62 196 Q38 210 32 260 Q40 266 46 262 Q50 220 66 206Z" fill="#3a4778"/>
-  <path d="M138 196 Q162 210 168 260 Q160 266 154 262 Q150 220 134 206Z" fill="#3a4778"/>
-  <ellipse cx="38" cy="265" rx="11" ry="9" fill="#ffd5b4"/>
-  <ellipse cx="162" cy="265" rx="11" ry="9" fill="#ffd5b4"/>
-  <circle cx="100" cy="216" r="2.5" fill="#2a3560"/>
-  <circle cx="100" cy="236" r="2.5" fill="#2a3560"/>
-  <circle cx="100" cy="256" r="2.5" fill="#2a3560"/>
-  <path d="M82 175 L88 170 L100 176 L112 170 L118 175 L118 183 L100 189 L82 183Z" fill="#eef2ff"/>
-  <rect x="88" y="158" width="24" height="23" rx="8" fill="#ffd5b4"/>
+  <rect x="72" y="272" width="22" height="88" rx="9" fill="#2e3d5e"/>
+  <rect x="106" y="272" width="22" height="88" rx="9" fill="#2e3d5e"/>
+  <ellipse cx="83" cy="360" rx="19" ry="9" fill="#2a2a2e"/>
+  <ellipse cx="117" cy="360" rx="19" ry="9" fill="#2a2a2e"/>
+  <path d="M58 190 Q54 234 52 276 L148 276 Q146 234 142 190 Z" fill="#7a8090"/>
+  <path d="M58 197 Q32 216 28 270 Q40 274 46 270 Q46 228 63 209Z" fill="#7a8090"/>
+  <path d="M142 197 Q168 216 172 270 Q160 274 154 270 Q154 228 137 209Z" fill="#7a8090"/>
+  <ellipse cx="34" cy="273" rx="13" ry="9" fill="#ffd5b4"/>
+  <ellipse cx="166" cy="273" rx="13" ry="9" fill="#ffd5b4"/>
+  <path d="M72 238 Q100 244 128 238 L126 264 Q100 267 74 264 Z" fill="#686e7a"/>
+  <path d="M76 185 Q100 198 124 185" stroke="#686e7a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <rect x="88" y="158" width="24" height="26" rx="8" fill="#ffd5b4"/>
   <ellipse cx="100" cy="110" rx="52" ry="55" fill="#ffd5b4"/>
-  <ellipse cx="100" cy="75" rx="55" ry="42" fill="#2a1f1f"/>
-  <path d="M48 82 Q44 100 46 142 Q52 147 58 142 Q55 106 55 85Z" fill="#2a1f1f"/>
-  <path d="M152 82 Q156 100 154 142 Q148 147 142 142 Q145 106 145 85Z" fill="#2a1f1f"/>
-  <path d="M52 88 Q58 54 100 51 Q142 54 148 88 Q138 64 100 62 Q62 64 52 88Z" fill="#2a1f1f"/>
-  <path d="M73 100 Q83 95 93 100" stroke="#1a0f0f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M107 100 Q117 95 127 100" stroke="#1a0f0f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="100" cy="72" rx="52" ry="38" fill="#1c1c1c"/>
+  <path d="M50 85 Q46 102 48 138 Q54 142 60 138 Q57 107 56 88Z" fill="#1c1c1c"/>
+  <path d="M150 85 Q154 102 152 138 Q146 142 140 138 Q143 107 144 88Z" fill="#1c1c1c"/>
+  <path d="M50 90 Q57 53 100 51 Q143 53 150 90 Q138 62 100 60 Q62 62 50 90Z" fill="#1c1c1c"/>
+  <path d="M82 57 Q87 42 93 56 Q88 48 82 57Z" fill="#1c1c1c"/>
+  <path d="M97 50 Q104 34 110 50 Q105 42 97 50Z" fill="#1c1c1c"/>
+  <path d="M114 55 Q121 42 126 57 Q120 48 114 55Z" fill="#1c1c1c"/>
+  <path d="M68 97 Q80 92 94 97" stroke="#1c1c1c" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M106 97 Q120 92 132 97" stroke="#1c1c1c" stroke-width="4" fill="none" stroke-linecap="round"/>
   ${eyes[e] || eyes.neutral}
-  <circle cx="100" cy="129" r="2.5" fill="#e8a07a"/>
+  <circle cx="100" cy="130" r="2.5" fill="#e8a07a"/>
   ${blush}
   ${mouths[e] || mouths.neutral}
 </svg>`;
 }
 
 // ============================================================
-// STORY
+// STORY  (大学・22歳のえいと)
 // ============================================================
 const SCENES = [
   {
-    bg: 'rain', expr: 'neutral',
-    narration: '放課後。気づけば空が暗くなっていた。\n傘を持っていないことに、今さら気づく。',
-    speaker: '凪', text: '...傘、持ってないの。\nよかったら、使って',
+    bg: 'park', expr: 'neutral',
+    narration: '大学の中庭。\n風が強い日で、えいとのノートが飛んでいった。',
+    speaker: 'えいと', text: '（舌打ちして、一人で拾い始める）',
     choices: [
-      { label: 'ありがとうございます！助かります',
-        res: '...そう', resExpr: 'cold',
-        d: { 安心度:2, 理解度:1 } },
-      { label: '...一緒に入っても、いいですか？',
-        res: '別に\n*少し、傘を傾けた*', resExpr: 'soft',
-        d: { 安心度:5, 崩壊危険値:-2, 依存度:1 } },
-      { label: '急に声かけないでください',
-        res: '...そう\n*静かに、傘を戻した*', resExpr: 'cold',
-        d: { 拒絶度:8, 崩壊危険値:6 } },
+      { label: '（黙って、一緒に拾う）',
+        res: '...別に、一人でよかった\n*でも、受け取ってくれた*', resExpr: 'cold',
+        d: { 安心度:3, 理解度:2 } },
+      { label: '遠くに飛んだの、持ってきます',
+        res: '...ああ\n*短く言って、目を逸らした*', resExpr: 'neutral',
+        d: { 安心度:4, 理解度:1 } },
+      { label: '大丈夫ですか？',
+        res: '見ての通り\n*冷たく言った*', resExpr: 'cold',
+        d: { 崩壊危険値:4, 拒絶度:2 } },
     ],
   },
   {
     bg: 'classroom', expr: 'neutral',
-    narration: '翌日。教室に入ると、窓際の席に昨日の人がいた。',
-    speaker: '凪', text: '...昨日の',
+    narration: '翌週。ゼミに入ると、窓際にえいとがいた。',
+    speaker: 'えいと', text: '...（一瞬、こちらを見た）',
     choices: [
-      { label: '昨日はありがとうございました！',
-        res: '...別に。困ってそうだったから', resExpr: 'cold',
+      { label: '先週はありがとう（話しかける）',
+        res: '...別に\n*すぐ目を逸らした*', resExpr: 'cold',
         d: { 安心度:2, 理解度:1 } },
-      { label: '（黙って、会釈する）',
-        res: '...\n*少し、こちらを見た*', resExpr: 'soft',
-        d: { 安心度:5, 崩壊危険値:-3 } },
-      { label: '隣の席、空いてますか？',
-        res: '...好きにすれば', resExpr: 'neutral',
-        d: { 崩壊危険値:3, 安心度:1 } },
+      { label: '（目が合ったが、会釈だけ）',
+        res: '...\n*少し、間があった*', resExpr: 'soft',
+        d: { 安心度:5, 崩壊危険値:-2 } },
+      { label: '隣いいですか？（席を指す）',
+        res: '...好きにしろ\n*でも追い払わなかった*', resExpr: 'neutral',
+        d: { 安心度:3, 崩壊危険値:2 } },
     ],
   },
   {
     bg: 'classroom', expr: 'neutral',
     narration: null,
-    speaker: '凪', text: '（小声で）\n...消しゴム、ある？',
+    speaker: 'えいと', text: '（小声で）...ペン、ある？',
     choices: [
-      { label: 'あります！どうぞ！（大きい声で）',
-        res: '...声、でかい', resExpr: 'cold',
-        d: { 崩壊危険値:4, 安心度:-1 } },
-      { label: '（黙って、そっと差し出す）',
-        res: '...ありがと\n*小さく、口角が上がった*', resExpr: 'soft',
+      { label: 'どうぞ（笑顔で渡す）',
+        res: '...なんで笑ってんの\n*でも、受け取った*', resExpr: 'cold',
+        d: { 安心度:2, 崩壊危険値:3 } },
+      { label: '（黙って、そっと渡す）',
+        res: '...ありがと\n*小さく、口角が動いた*', resExpr: 'soft',
         d: { 安心度:6, 自己開示率:2, 崩壊危険値:-2 } },
-      { label: '半分ずつ使いますか？',
-        res: 'は？...いい\n*でも口元が少し動いた*', resExpr: 'neutral',
-        d: { 理解度:3, 安心度:1 } },
-    ],
-  },
-  {
-    bg: 'rooftop', expr: 'neutral',
-    narration: '昼休み。屋上に来ると、凪が一人でいた。',
-    speaker: '凪', text: '...なに',
-    choices: [
-      { label: '一緒に食べてもいいですか？',
-        res: '...勝手にすれば', resExpr: 'neutral',
-        d: { 崩壊危険値:4, 安心度:1 } },
-      { label: '邪魔でしたか（去ろうとする）',
-        res: '...別に、邪魔じゃない\n*小声で言った*', resExpr: 'soft',
-        d: { 安心度:6, 自己開示率:2 } },
-      { label: '（並んで、景色を見る）',
-        res: '...まあ\n*少し、間があった*', resExpr: 'neutral',
-        d: { 安心度:5, 崩壊危険値:-2 } },
+      { label: '後で返してね',
+        res: '分かってる\n*短く言った*', resExpr: 'neutral',
+        d: { 理解度:2, 安心度:2 } },
     ],
   },
   {
     bg: 'hallway', expr: 'neutral',
-    narration: '放課後の廊下。\n凪が窓際で一人、本を読んでいた。',
-    speaker: '凪', text: '...あ',
+    narration: '混んだ学食。\n他に空席がなく、えいとの向かいに座るしかなかった。',
+    speaker: 'えいと', text: '...（こちらを見て、何も言わない）',
     choices: [
-      { label: '何読んでるんですか？',
-        res: '...別に、ただの本\n*少し、本を閉じた*', resExpr: 'cold',
-        d: { 理解度:4, 崩壊危険値:2 } },
-      { label: 'ごめん、邪魔したね（立ち去る）',
-        res: '...待って\n*小声だった*', resExpr: 'soft',
-        d: { 安心度:5, 自己開示率:3, 崩壊危険値:-3 } },
-      { label: '（隣に、静かに座る）',
-        res: '...\n*しばらく、二人で黙っていた*', resExpr: 'soft',
-        d: { 安心度:8, 崩壊危険値:-4, 自己開示率:2 } },
+      { label: '向かい、いいですか？',
+        res: '...まあ\n*また食べ始めた*', resExpr: 'neutral',
+        d: { 安心度:3, 理解度:2 } },
+      { label: '（何も言わず座る）',
+        res: '...*じろっと見たが、何も言わなかった*', resExpr: 'soft',
+        d: { 安心度:5, 崩壊危険値:-2 } },
+      { label: '（空席を探して立ち去る）',
+        res: '...*なぜか、ちらっと見た*', resExpr: 'cold',
+        d: { 崩壊危険値:2 } },
+    ],
+  },
+  {
+    bg: 'evening', expr: 'neutral',
+    narration: '授業後、駅に向かっていると\nえいとが同じ方向を歩いていた。',
+    speaker: 'えいと', text: '...（気づいている、でも何も言わない）',
+    choices: [
+      { label: '（隣に並ぶ）',
+        res: '...なんで一緒に歩いてる\n*でも立ち止まらなかった*', resExpr: 'neutral',
+        d: { 安心度:4, 理解度:3 } },
+      { label: '（少し後ろから、同じ方向へ）',
+        res: '...*ペースが合った*', resExpr: 'soft',
+        d: { 安心度:6, 崩壊危険値:-3 } },
+      { label: '（先を歩く）',
+        res: '...*少し後ろから視線を感じた*', resExpr: 'cold',
+        d: { 崩壊危険値:2 } },
     ],
   },
   {
     bg: 'classroom', expr: 'cold',
-    narration: 'ある日、凪がずっと窓の外を見ていた。\nいつもより少し、遠い目をしていた。',
-    speaker: '凪', text: '...別に、何でもない',
+    narration: 'ある日、えいとがずっと窓の外を見ていた。\nいつもより少し、遠い目をしていた。',
+    speaker: 'えいと', text: '...別に、何でもない',
     choices: [
-      { label: 'どうしたんですか？何かあったの？',
-        res: '何でもないって言った', resExpr: 'cold',
+      { label: 'どうしたの、顔色悪い',
+        res: '余計なこと言うな\n*視線を逸らした*', resExpr: 'cold',
         d: { 崩壊危険値:8, 拒絶度:3 } },
-      { label: '（何も言わず、隣に座る）',
+      { label: '（何も言わず、隣にいる）',
         res: '...\n*少し、肩の力が抜けた*', resExpr: 'soft',
         d: { 安心度:7, 自己開示率:4, 崩壊危険値:-4 } },
-      { label: '分かるよ、つらいよね',
-        res: '分からないでしょ\n*冷たく言った*', resExpr: 'cold',
+      { label: 'しんどそうだね',
+        res: 'うるさい\n*でも、逃げなかった*', resExpr: 'cold',
         d: { 崩壊危険値:9, 拒絶度:4, 安心度:-3 } },
     ],
   },
   {
     bg: 'night', expr: 'neutral',
-    narration: '深夜。スマホに通知が来た。\n凪からだった。',
-    speaker: '凪', text: '起きてる？',
+    narration: '夜中の2時。スマホが鳴った。\nえいとからだった。',
+    speaker: 'えいと', text: '起きてる？',
     choices: [
-      { label: '起きてます！何かありましたか？',
-        res: '...別に、確認しただけ', resExpr: 'cold',
-        d: { 安心度:1, 崩壊危険値:1 } },
       { label: 'うん。どうした？',
-        res: '...眠れなくて\n（しばらく後）別に、何でもない', resExpr: 'soft',
+        res: '...眠れなくて\n（しばらく後）でもいい、忘れて', resExpr: 'soft',
         d: { 安心度:6, 自己開示率:4, 崩壊危険値:-3, 依存度:2 } },
-      { label: '（すぐには返信しない）',
-        res: '...ごめん、変な時間に', resExpr: 'neutral',
-        d: { 崩壊危険値:2, 安心度:2 } },
+      { label: '（少し待ってから）起きてるよ',
+        res: '...ごめん、こんな時間に\n*短く言った*', resExpr: 'neutral',
+        d: { 安心度:4, 崩壊危険値:-1 } },
+      { label: '何かありましたか？！',
+        res: '...別に、確認しただけ\n*すぐ既読になったのに返信がなかった*', resExpr: 'cold',
+        d: { 安心度:1, 崩壊危険値:1 } },
     ],
   },
   {
-    bg: 'park', expr: 'neutral',
-    narration: '休日、公園で偶然会った。\n凪は少し驚いた様子だった。',
-    speaker: '凪', text: '...なんで私のそばにいるの',
+    bg: 'hallway', expr: 'neutral',
+    narration: '大学近くの本屋。\nたまたまえいとがいた。',
+    speaker: 'えいと', text: '（少し驚いた顔で）...何読んでるの',
     choices: [
-      { label: '一緒にいたいから',
-        res: '...それ、困る', resExpr: 'cold',
-        d: { 崩壊危険値:8, 依存度:2 } },
-      { label: 'なんとなく、かな',
-        res: '...そっか\n*少し、間があった*', resExpr: 'neutral',
-        d: { 安心度:4, 理解度:5 } },
-      { label: '（何も言わず、隣を歩く）',
-        res: '...\n*そのまま、二人で歩いた*', resExpr: 'soft',
-        d: { 安心度:7, 自己開示率:3, 崩壊危険値:-4 } },
+      { label: '（本を見せる）',
+        res: 'そっちか\n*少し、ページをめくった*', resExpr: 'soft',
+        d: { 安心度:5, 自己開示率:2 } },
+      { label: 'えいとは？（棚を指す）',
+        res: '...別に\n*本を閉じた*', resExpr: 'cold',
+        d: { 理解度:3, 崩壊危険値:2 } },
+      { label: 'こういうとこ来るんだ',
+        res: '悪いか\n*でも少し、口角が動いた*', resExpr: 'neutral',
+        d: { 理解度:4, 安心度:2 } },
     ],
   },
   {
     bg: 'evening', expr: 'cold',
-    narration: '夕暮れの屋上。\n凪がぼんやりと空を見ていた。',
-    speaker: '凪', text: '...ここから落ちたら、楽になれるのかな\n（こちらを見る）冗談だよ',
+    narration: '夕暮れの屋上。\nえいとがひとりで空を見ていた。',
+    speaker: 'えいと', text: '...消えたら、楽になれるのかな\n（こちらを向いて）冗談だよ',
     choices: [
-      { label: 'そんなこと言わないで！',
-        res: '...大げさ', resExpr: 'cold',
+      { label: 'そんなこと言わないで',
+        res: '...うるさい\n*でも逃げなかった*', resExpr: 'cold',
         d: { 崩壊危険値:8, 拒絶度:3 } },
       { label: '（黙って、隣に立つ）',
         res: '...何も言わないの\n*少し、笑った気がした*', resExpr: 'soft',
         d: { 安心度:9, 自己開示率:5, 崩壊危険値:-6 } },
       { label: '楽になりたいって思ってるの？',
-        res: '...うるさい\n*でも、逃げなかった*', resExpr: 'cold',
+        res: '...分からない、俺も\n*小声だった*', resExpr: 'cold',
         d: { 崩壊危険値:5, 理解度:3 } },
     ],
   },
   {
     bg: 'spring', expr: 'neutral',
-    narration: '季節が変わった。\n凪との関係も、少しだけ変わった気がする。',
-    speaker: '凪', text: '...（こちらを見る）',
+    narration: '桜の季節が来た。\nえいととの関係も、少しだけ変わった気がする。',
+    speaker: 'えいと', text: '...（こちらを見る）',
     choices: [
       { label: '（静かに、隣に立つ）',
         res: '...壊れないかもしれない\n*小さく、呟いた*', resExpr: 'soft',
         d: { 安心度:5, 自己開示率:5, 崩壊危険値:-5 } },
-      { label: '凪のこと、もっと知りたい',
-        res: '...そういうの、怖い\nでも、まあ', resExpr: 'neutral',
+      { label: 'えいとのこと、もっと知りたい',
+        res: '...そういうの、怖い\nまあ、でも\n*少し間があった*', resExpr: 'neutral',
         d: { 理解度:4, 崩壊危険値:3, 自己開示率:3 } },
       { label: '今日も一緒にいていい？',
-        res: '...別に\n*でも、少し微笑んだ気がした*', resExpr: 'soft',
+        res: '...別に\n*でも少し、微笑んだ気がした*', resExpr: 'soft',
         d: { 安心度:4, 依存度:2 } },
     ],
   },
@@ -247,23 +244,23 @@ const SCENES = [
 const ENDINGS = {
   best_end: {
     cls:'ending-best', tag:'BEST END', expr:'soft',
-    text:'凪は、初めて笑った。\n\nそれは本当に小さな変化で、\n気づかない人には気づかないくらいの。\n\nでも、あなたには見えた。\n\n「...壊れないかもしれない」\n\n隣にいても壊れないかもしれないと、\n凪は初めて、そう思えた。',
+    text:'えいとが、笑った。\n\nそれは本当に小さな変化で、\n気づかない人には気づかないくらいの。\n\nでも、あなたには見えた。\n\n「...壊れないかもしれない」\n\n男の人があんな風に笑うの、初めて見た気がした。\n隣にいても壊れないかもしれないと、\nえいとは初めてそう思えた。',
   },
   good_end: {
     cls:'ending-good', tag:'GOOD END', expr:'neutral',
-    text:'凪との距離は、まだ遠い。\n\nでも以前より、少しだけ近くなった。\n\n「...また来る？」\n\nそれが、凪の精一杯だった。',
+    text:'えいととの距離は、まだ遠い。\n\nでも以前より、少しだけ近くなった。\n\n「...また来る？」\n\n素直じゃないけれど、それがえいとの精一杯だった。',
   },
   normal_end: {
     cls:'ending-normal', tag:'END', expr:'neutral',
-    text:'凪は今日も、一人でいる。\n\nあなたのことが嫌いなわけじゃない。\nただ、うまく距離が縮められなかった。\n\nそれだけの話。',
+    text:'えいとは今日も、一人でいる。\n\nあなたのことが嫌いなわけじゃない。\nただ、うまく距離が縮められなかった。\n\nそれだけのこと。',
   },
   bad_collapse: {
     cls:'ending-bad', tag:'BAD END', expr:'cold',
-    text:'「大丈夫」\n\n凪の口癖が、増えていった。\n\nある日、凪は来なくなった。\n「大丈夫」と言ったまま、静かに消えた。',
+    text:'「大丈夫」\n\nえいとの口癖が、増えていった。\n\nある日、えいとは来なくなった。\n「大丈夫」と言ったまま、静かに消えた。',
   },
   bad_rejection: {
     cls:'ending-bad', tag:'BAD END', expr:'cold',
-    text:'凪は、笑わなくなった。\n\nあなたを見る目が、どんどん遠くなった。\n\nそしてある日、席が空になっていた。',
+    text:'えいとは、笑わなくなった。\n\nあなたを見る目がどんどん遠くなった。\n\nそしてある日、席が空になっていた。',
   },
 };
 
@@ -374,7 +371,7 @@ class App {
     this.root.innerHTML = `
 <div class="setup-screen">
   <div class="setup-wrap">
-    <div class="setup-logo">凪</div>
+    <div class="setup-logo">えいと</div>
     <div class="setup-tagline">完全には理解できない存在へ近づく物語</div>
     <div class="setup-card">
       これは「攻略」ではない。<br>
@@ -526,7 +523,7 @@ class App {
     const tbName = document.getElementById('tb-name');
     const tbText = document.getElementById('tb-text');
     const tbCont = document.getElementById('tb-cont');
-    if (tbName) { tbName.textContent = '凪'; tbName.className = 'tb-name'; }
+    if (tbName) { tbName.textContent = 'えいと'; tbName.className = 'tb-name'; }
     if (tbCont) tbCont.classList.add('hidden');
 
     await sleep(400);
