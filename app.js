@@ -606,8 +606,13 @@ class App {
     const tbCont = document.getElementById('tb-cont');
     if (!area) return;
     tbCont.classList.add('hidden');
-    area.innerHTML = this._scene.choices.map((c, i) =>
-      `<button class="choice-btn" data-i="${i}">${esc(c.label)}</button>`
+    const idx = this._scene.choices.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [idx[i], idx[j]] = [idx[j], idx[i]];
+    }
+    area.innerHTML = idx.map(i =>
+      `<button class="choice-btn" data-i="${i}">${esc(this._scene.choices[i].label)}</button>`
     ).join('');
     area.classList.remove('hidden');
     area.querySelectorAll('.choice-btn').forEach(btn => {
