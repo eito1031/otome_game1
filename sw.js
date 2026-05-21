@@ -1,4 +1,4 @@
-const CACHE = 'eito-v2';
+const CACHE = 'eito-v3';
 
 self.addEventListener('install', e => {
   const base = self.registration.scope;
@@ -9,6 +9,7 @@ self.addEventListener('install', e => {
     base + 'app.js',
     base + 'manifest.json',
     base + 'icon.svg',
+    base + 'chara.png',
   ];
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
   self.skipWaiting();

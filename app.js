@@ -13,93 +13,17 @@ const M_COLORS = {
 };
 
 // ============================================================
-// CHARACTER SVG  (えいと — 社会人1年目)
+// CHARACTER IMAGE  (えいと — chara.png を使用)
 // ============================================================
 function charSVG(expr) {
   const e = expr || 'neutral';
-
-  // Each expression: upper lash line + iris outer + iris inner + highlight
-  const eyes = {
-    neutral: `
-      <path d="M73 113 Q82 110 91 113" stroke="#1c1c1c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <ellipse cx="82" cy="119" rx="9" ry="9" fill="#7a5535"/>
-      <ellipse cx="82" cy="119" rx="5.5" ry="5.5" fill="#3e2010"/>
-      <circle cx="85" cy="115" r="2.5" fill="white"/>
-      <path d="M109 113 Q118 110 127 113" stroke="#1c1c1c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <ellipse cx="118" cy="119" rx="9" ry="9" fill="#7a5535"/>
-      <ellipse cx="118" cy="119" rx="5.5" ry="5.5" fill="#3e2010"/>
-      <circle cx="121" cy="115" r="2.5" fill="white"/>`,
-    cold: `
-      <path d="M73 112 Q82 108 91 111" stroke="#1c1c1c" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      <ellipse cx="82" cy="117" rx="9" ry="7" fill="#7a5535"/>
-      <ellipse cx="82" cy="117" rx="5.5" ry="4.5" fill="#3e2010"/>
-      <circle cx="85" cy="114" r="2" fill="white"/>
-      <path d="M109 112 Q118 108 127 111" stroke="#1c1c1c" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      <ellipse cx="118" cy="117" rx="9" ry="7" fill="#7a5535"/>
-      <ellipse cx="118" cy="117" rx="5.5" ry="4.5" fill="#3e2010"/>
-      <circle cx="121" cy="114" r="2" fill="white"/>`,
-    soft: `
-      <path d="M73 115 Q82 111 91 115" stroke="#1c1c1c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-      <ellipse cx="82" cy="121" rx="9" ry="9.5" fill="#8a6545"/>
-      <ellipse cx="82" cy="121" rx="5.5" ry="6" fill="#4e3020"/>
-      <circle cx="85" cy="117" r="2.5" fill="white"/>
-      <path d="M109 115 Q118 111 127 115" stroke="#1c1c1c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-      <ellipse cx="118" cy="121" rx="9" ry="9.5" fill="#8a6545"/>
-      <ellipse cx="118" cy="121" rx="5.5" ry="6" fill="#4e3020"/>
-      <circle cx="121" cy="117" r="2.5" fill="white"/>`,
+  const filters = {
+    neutral: 'saturate(0.88) brightness(0.97)',
+    cold:    'saturate(0.45) brightness(0.86) hue-rotate(5deg)',
+    soft:    'saturate(1.08) brightness(1.02)',
   };
-  const mouths = {
-    neutral: `<path d="M90 140 Q100 142 110 140" stroke="#c8846a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
-    cold:    `<path d="M90 141 Q100 138 110 141" stroke="#b87860" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
-    soft:    `<path d="M88 139 Q100 148 112 139" stroke="#c8846a" stroke-width="2" fill="none" stroke-linecap="round"/>`,
-  };
-  const blush = e === 'soft'
-    ? `<ellipse cx="68" cy="129" rx="10" ry="6" fill="rgba(255,110,130,.18)"/>
-       <ellipse cx="132" cy="129" rx="10" ry="6" fill="rgba(255,110,130,.18)"/>`
-    : '';
-
-  return `<svg viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="100" cy="377" rx="54" ry="7" fill="rgba(0,0,0,.08)"/>
-  <ellipse cx="82" cy="366" rx="21" ry="8" fill="#d0d0d0"/>
-  <ellipse cx="82" cy="362" rx="20" ry="7" fill="#222228"/>
-  <ellipse cx="118" cy="366" rx="21" ry="8" fill="#d0d0d0"/>
-  <ellipse cx="118" cy="362" rx="20" ry="7" fill="#222228"/>
-  <path d="M63 272 Q60 330 58 360 L100 360 L102 282 Z" fill="#8a8a98"/>
-  <path d="M137 272 Q140 330 142 360 L100 360 L98 282 Z" fill="#8a8a98"/>
-  <path d="M74 292 Q75 330 74 357" stroke="#7a7a88" stroke-width="1.2" fill="none"/>
-  <path d="M126 292 Q125 330 126 357" stroke="#7a7a88" stroke-width="1.2" fill="none"/>
-  <path d="M55 190 Q50 234 48 277 L152 277 Q150 234 145 190 Z" fill="#1e1e24"/>
-  <path d="M70 176 Q100 166 130 176 Q132 188 128 196 Q100 202 72 196 Q68 188 70 176Z" fill="#18181e"/>
-  <path d="M55 197 Q26 220 22 274 Q37 278 46 274 Q46 234 62 213Z" fill="#1e1e24"/>
-  <path d="M145 197 Q174 220 178 274 Q163 278 154 274 Q154 234 138 213Z" fill="#1e1e24"/>
-  <ellipse cx="28" cy="277" rx="13" ry="9" fill="#ffd5b4"/>
-  <ellipse cx="172" cy="277" rx="13" ry="9" fill="#ffd5b4"/>
-  <ellipse cx="24" cy="271" rx="4" ry="3" fill="none" stroke="#c0c0c8" stroke-width="1.8"/>
-  <line x1="100" y1="188" x2="100" y2="277" stroke="#38383e" stroke-width="1.5"/>
-  <circle cx="100" cy="240" r="3" fill="#38383e"/>
-  <path d="M57 240 L70 236 L70 260 L57 264 Z" fill="#18181e"/>
-  <path d="M143 240 L130 236 L130 260 L143 264 Z" fill="#18181e"/>
-  <path d="M82 187 Q100 198 118 187 Q114 179 100 177 Q86 179 82 187Z" fill="#2c2c36"/>
-  <path d="M84 181 Q100 194 116 181" stroke="#b8b8c4" stroke-width="1.5" fill="none"/>
-  <rect x="88" y="156" width="24" height="30" rx="8" fill="#ffd5b4"/>
-  <ellipse cx="100" cy="107" rx="47" ry="54" fill="#ffd5b4"/>
-  <ellipse cx="53" cy="117" rx="5" ry="8" fill="#ffd5b4"/>
-  <ellipse cx="147" cy="117" rx="5" ry="8" fill="#ffd5b4"/>
-  <circle cx="53" cy="111" r="2" fill="#b0b0bc"/>
-  <ellipse cx="100" cy="70" rx="50" ry="36" fill="#141820"/>
-  <path d="M51 88 Q47 107 50 144 Q56 148 62 144 Q59 112 59 90Z" fill="#141820"/>
-  <path d="M149 88 Q153 108 151 148 Q145 152 139 148 Q142 114 141 90Z" fill="#141820"/>
-  <path d="M51 92 Q57 52 100 50 Q143 52 149 92 Q136 62 100 60 Q64 62 51 92Z" fill="#141820"/>
-  <path d="M78 58 Q94 44 114 54 Q97 48 78 58Z" fill="#141820"/>
-  <path d="M88 53 Q106 37 124 50 Q108 43 88 53Z" fill="#141820"/>
-  <path d="M67 74 Q80 62 98 64" stroke="#22283a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-  <path d="M68 97 Q80 92 94 97" stroke="#141414" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-  <path d="M106 97 Q120 92 132 97" stroke="#141414" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-  ${eyes[e] || eyes.neutral}
-  <circle cx="100" cy="131" r="2" fill="#e0987a"/>
-  ${blush}
-  ${mouths[e] || mouths.neutral}
-</svg>`;
+  return `<img src="chara.png" class="chara-img" alt="えいと"
+    style="filter:${filters[e] || filters.neutral}"/>`;
 }
 
 // ============================================================
