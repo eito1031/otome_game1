@@ -140,17 +140,20 @@ body { background:#fff; font-family:var(--font); -webkit-font-smoothing:antialia
 /* Character */
 .char-area {
   position:absolute; bottom:0; left:50%; transform:translateX(-50%);
-  height:72%; display:flex; align-items:flex-end; justify-content:center;
+  height:90%;
+  display:flex; align-items:center; justify-content:center;
   transition:opacity .4s ease, transform .4s ease;
   pointer-events:none;
-  /* filter は削除 — mix-blend-mode が効かなくなるため */
+  mix-blend-mode:multiply;
 }
 .char-area.hide { opacity:0; transform:translateX(-50%) translateY(20px); }
 .char-area svg { height:100%; width:auto; max-width:260px; filter:drop-shadow(0 4px 20px rgba(0,0,0,.12)); }
 .chara-img {
-  height:100%; width:auto; max-width:280px;
-  object-fit:contain; display:block;
-  mix-blend-mode:multiply;
+  height:80%;
+  width:auto;
+  max-width:85vw;
+  object-fit:contain;
+  display:block;
   transition:filter .4s ease;
 }
 
