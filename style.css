@@ -263,10 +263,14 @@ body { background:#fff; font-family:var(--font); -webkit-font-smoothing:antialia
   gap:1.6rem; text-align:center;
 }
 .ending-tag {
-  font-size:.68rem; letter-spacing:.5em; text-transform:uppercase;
-  color:var(--pink);
+  font-size:.82rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+  padding:.42rem 1.5rem; border-radius:6px;
+  color:#fff; background:var(--pink);
+  box-shadow:0 2px 12px rgba(240,98,146,.35);
 }
-.ending-bad .ending-tag { color:#888; }
+.ending-good   .ending-tag { background:#48a96e; box-shadow:0 2px 12px rgba(72,169,110,.3); }
+.ending-normal .ending-tag { background:#8888a0; box-shadow:none; }
+.ending-bad    .ending-tag { background:#7070a8; box-shadow:none; }
 .ending-char { width:150px; filter:drop-shadow(0 4px 16px rgba(200,100,150,.3)); }
 .ending-text {
   font-size:.97rem; line-height:2.1; color:var(--text-2);

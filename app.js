@@ -365,15 +365,15 @@ const ENDINGS = {
     text:'えいととの距離は、まだはっきりしない。\n\nでも以前より、ずっと近くなった。\n\n「...また連絡する」\n\nえいとが珍しく、自分からそう言った。',
   },
   normal_end: {
-    cls:'ending-normal', tag:'END', expr:'neutral',
+    cls:'ending-normal', tag:'NORMAL END', expr:'neutral',
     text:'えいとは今日も、少し遠い。\n\nあのとき何か違うことをしていたら、\n何かが変わっていたのかもしれない。\n\nでも、嫌いになったわけじゃない。\nそれだけのこと。',
   },
   bad_collapse: {
-    cls:'ending-bad', tag:'BAD END', expr:'cold',
+    cls:'ending-bad', tag:'BAD END — 崩壊', expr:'cold',
     text:'「大丈夫」\n\nえいとの口癖が、増えていった。\n\nある日、えいとは来なくなった。\n「大丈夫」と言ったまま、静かに消えた。',
   },
   bad_rejection: {
-    cls:'ending-bad', tag:'BAD END', expr:'cold',
+    cls:'ending-bad', tag:'BAD END — 拒絶', expr:'cold',
     text:'えいとは、笑わなくなった。\n\nあなたを見る目がどんどん遠くなった。\n\nそしてある日、連絡が途絶えた。',
   },
 };
