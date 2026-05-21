@@ -434,7 +434,7 @@ class GameState {
 
   applyDelta(d) {
     if (!d) return;
-    for (const k of Object.keys(INITIAL_METRICS)) {
+    for (const k of Object.keys(this.metrics)) {
       if (typeof d[k] === 'number')
         this.metrics[k] = Math.max(0, Math.min(100, this.metrics[k] + d[k]));
     }
