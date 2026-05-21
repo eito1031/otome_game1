@@ -144,7 +144,7 @@ body { background:#fff; font-family:var(--font); -webkit-font-smoothing:antialia
   display:flex; align-items:center; justify-content:center;
   transition:opacity .4s ease, transform .4s ease;
   pointer-events:none;
-  /* filter を使わない — filter は CSS isolation を作り mix-blend-mode を壊す */
+  mix-blend-mode:multiply;   /* 子要素ではなくここに適用 */
 }
 .char-area.hide { opacity:0; transform:translateX(-50%) translateY(20px); }
 .char-area svg { height:100%; width:auto; max-width:320px; }
@@ -152,7 +152,6 @@ body { background:#fff; font-family:var(--font); -webkit-font-smoothing:antialia
 .chara-img {
   height:100%; width:auto; max-width:320px;
   object-fit:contain; display:block;
-  mix-blend-mode:multiply;   /* 白背景を透過 */
   transition:filter 0.4s ease;
 }
 
