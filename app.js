@@ -390,7 +390,7 @@ function getEnding(metrics, sceneIdx) {
   if (m.無関心度 >= 80) return 'bad_collapse';
   if (m.拒絶度 >= 80) return 'bad_rejection';
   if (sceneIdx >= SCENES.length) {
-    if (m.安心度 >= 60 && m.自己開示率 >= 22 && m.無関心度 <= 35) return 'best_end';
+    if (m.安心度 >= 60 && m.自己開示率 >= 20 && m.無関心度 <= 35) return 'best_end';
     if (m.安心度 >= 38 && m.無関心度 <= 60) return 'good_end';
     return 'normal_end';
   }
